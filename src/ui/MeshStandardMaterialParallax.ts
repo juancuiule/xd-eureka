@@ -1,7 +1,7 @@
 import {IUniform, MeshStandardMaterial, Shader, Texture, Vector2, Vector3, Vector4, WebGLRenderer} from "three";
 import {MeshStandardMaterialParameters} from "three/src/materials/MeshStandardMaterial";
 import * as THREE from "three";
-import * as dat from 'dat.gui';
+// import * as dat from 'dat.gui';
 import {checkWebP} from "../utils/MathUtils";
 
 export interface PageData {
@@ -41,11 +41,9 @@ export interface Meta {
     smartupdate: string;
 }
 
-const DUMMY_TEXTURE = new THREE.Texture();
-
 export class MeshStandardMaterialParallax extends MeshStandardMaterial {
     public iResolution: IUniform;
-    private _gui: dat.GUI;
+    // private _gui: dat.GUI;
 
     private textures: Texture[] = [];
     private moveFactors: Vector2[] = [];
@@ -57,13 +55,13 @@ export class MeshStandardMaterialParallax extends MeshStandardMaterial {
         super(parameters);
         this.renderer = renderer;
         this.anisotropy = anisotropy;
-        this._gui = gui;
+        // this._gui = gui;
         this.onBeforeCompile = this.beforeCompileModifier;
     }
 
     public addPage = (pageData: PageData, pageNumber = 0) => {
         pageData.frames.reverse().forEach((frame, index) => {
-            let filename = checkWebP(`images/${pageNumber.toString().padStart(2, '0')}/${frame.filename}`);
+            let filename = `images/pages/${frame.filename}`
             let texture = new THREE.TextureLoader().load(filename, () => {
                 this.renderer.initTexture(texture);
             });
@@ -91,9 +89,9 @@ export class MeshStandardMaterialParallax extends MeshStandardMaterial {
         this.iResolution = shader.uniforms.iResolution;
         this.userData.shader = shader;
         
-        if (this._gui) {
-            this._gui.add(shader.uniforms.moveFactor.value, 'x', 0, 5).name('layer0 .x');
-            this._gui.add(shader.uniforms.moveFactor.value, 'y', 0, 5).name('layer0 .y');
-        }
+        // if (this._gui) {
+        //     this._gui.add(shader.uniforms.moveFactor.value, 'x', 0, 5).name('layer0 .x');
+        //     this._gui.add(shader.uniforms.moveFactor.value, 'y', 0, 5).name('layer0 .y');
+        // }
     }
 }

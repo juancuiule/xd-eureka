@@ -6,7 +6,7 @@ export function randomInteger(min: number, max: number): number {
 }
 
 export function checkWebP(filename: string) {
-  return (window as any).Main.WEBP_SUPPORTED
+  return (window as any).Main.WEBP_SUPPORTED && false
     ? filename.replace(".png", ".webp").replace("images/", "images_webp/")
     : filename;
 }

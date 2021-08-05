@@ -4,19 +4,19 @@ import { Draggable } from "gsap/Draggable";
 import { InertiaPlugin } from "gsap/InertiaPlugin";
 import * as THREE from "three";
 import {
-    AmbientLight,
-    DirectionalLight,
-    Group,
-    MathUtils,
-    Mesh,
-    MeshStandardMaterial,
-    Object3D,
-    PerspectiveCamera,
-    Scene,
-    SpotLight,
-    Texture,
-    Vector2,
-    WebGLRenderer
+  AmbientLight,
+  DirectionalLight,
+  Group,
+  MathUtils,
+  Mesh,
+  MeshStandardMaterial,
+  Object3D,
+  PerspectiveCamera,
+  Scene,
+  SpotLight,
+  Texture,
+  Vector2,
+  WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Stats from "three/examples/jsm/libs/stats.module";
@@ -26,27 +26,19 @@ import BgMap from "../assets/images/bg.jpg";
 // @ts-ignore
 import RoughnessMap2 from "../assets/models/bump.jpg";
 // @ts-ignore
-import BookCover from "../assets/models/cover-eureka.glb";
+import BookCover from "../assets/models/cover_blender.glb";
 // @ts-ignore
 import NormalMap from "../assets/models/normal.jpg";
 // @ts-ignore
-import BookPage from "../assets/models/page-eureka.glb";
+import BookPage from "../assets/models/page_blender.glb";
 // @ts-ignore
 import RoughnessMap from "../assets/models/roughness_2.jpg";
-// @ts-ignore
-import Page_1 from "../assets/static/images/01/data.json";
-// @ts-ignore
-import Page_2 from "../assets/static/images/02/data.json";
-// @ts-ignore
-import Page_8 from "../assets/static/images/08/data.json";
-import { Menu } from "../ui/Menu";
+
 import {
-    MeshStandardMaterialParallax,
-    PageData
+  MeshStandardMaterialParallax,
+  PageData,
 } from "../ui/MeshStandardMaterialParallax";
 import { checkWebP, fitCameraToSelection } from "../utils/MathUtils";
-import { MouseMoveTracker } from "../utils/MouseMoveTracker";
-
 
 gsap.registerPlugin(InertiaPlugin, Draggable);
 
@@ -59,32 +51,33 @@ MathUtils.floorPowerOfTwo = (value) => {
   return MathUtils.ceilPowerOfTwo(value);
 };
 
-const pages = Array.from({length: 23}).map((_, i) => {
+const pages = Array.from({ length: 23 }).map((_, i) => {
   return {
-    frames: [{
-        filename: `page-${i + 1}.webp`,
+    frames: [
+      {
+        filename: i === 0 ? `page-1.webp` : `page-${i + 1}.jpg`,
         frame: {
-            x: 1,
-            y: 1,
-            w: 4988,
-            h: 3288
+          x: 1,
+          y: 1,
+          w: 4752,
+          h: 3170,
         },
         rotated: !1,
         trimmed: !1,
         spriteSourceSize: {
-            x: 0,
-            y: 0,
-            w: 4988,
-            h: 3288
+          x: 0,
+          y: 0,
+          w: 4752,
+          h: 3170,
         },
         sourceSize: {
-            w: 4988,
-            h: 3288
-        }
-    }],
-}
-})
-
+          w: 4752,
+          h: 3170,
+        },
+      },
+    ],
+  };
+});
 
 export class MaskRevealView {
   private renderer: WebGLRenderer;
@@ -103,7 +96,6 @@ export class MaskRevealView {
   private ambientMove = { x: 0, y: 0 };
 
   private dim = new Vector2();
-  private mouseTracker: MouseMoveTracker = new MouseMoveTracker();
   private _isActive: boolean = false;
 
   private animationFrame: number;
@@ -127,7 +119,6 @@ export class MaskRevealView {
     new THREE.PlaneBufferGeometry(2.2, 1.25)
   );
   private flipTimeline = gsap.timeline({ paused: true, ease: "none" });
-  private captionTimeline = gsap.timeline({ paused: true, ease: "none" });
   private pages: THREE.Object3D[] = [];
   private coverWrapper: Group;
 
@@ -136,56 +127,27 @@ export class MaskRevealView {
 
   private modelsLoaded = 0;
   private texturesLoaded = false;
-  private enterButton = document.querySelector(".enterButton");
-  private preText = document.querySelector(".pretext");
-  private navArrows = document.querySelectorAll(".navArrow");
-  private captions = document.querySelectorAll(".captions .caption");
 
   private ENTERED = false;
   private ENTERING = false;
-  private xMoveAmount: number = 0;
   private bookPixelWidth: number;
 
-  // private SKIP_INTRO = false;
   private SKIP_INTRO = true;
 
   private cameraLookAtPosition = new THREE.Object3D();
   private raycaster = new THREE.Raycaster();
   private mouse = new THREE.Vector2();
   private ON_LANDING_SCREEN: boolean = false;
-  private menu: Menu;
+  // private menu: Menu;
   private lastPageBookMoveTween: gsap.core.Tween;
   private coverBottomBack: Mesh;
   private currentViewYOffset: number = 0;
-  private ambientMoveFactor: number = 8;
 
   constructor(parent: HTMLElement) {
     this._parent = parent;
 
     this.setupScene();
     this.setupDraggable();
-    this.setupCaptions();
-  }
-
-  private setupCaptions() {
-    this.captions.forEach((caption, index) => {
-      this.captionTimeline.fromTo(
-        caption,
-        { opacity: 0 },
-        { opacity: 1, duration: 0.5 },
-        index + 0.5
-      );
-      this.captionTimeline.to(
-        caption,
-        { opacity: 0, duration: 0.25 },
-        index + 1.25
-      );
-    });
-    this.captionTimeline.set(
-      { value: 0 },
-      { value: 1 },
-      this.pageDatas.length + 1
-    );
   }
 
   private setupDraggable() {
@@ -232,7 +194,15 @@ export class MaskRevealView {
 
   private setupScene() {
     THREE.DefaultLoadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
-      console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.');
+      console.log(
+        "Loading file: " +
+          url +
+          ".\nLoaded " +
+          itemsLoaded +
+          " of " +
+          itemsTotal +
+          " files."
+      );
       if (itemsLoaded === itemsTotal) {
         this.texturesLoaded = true;
         this.modelsLoadedCheck();
@@ -265,7 +235,6 @@ export class MaskRevealView {
     this.renderer.setSize(this._parent.clientWidth, this._parent.clientHeight);
     this._parent.prepend(this.renderer.domElement);
 
-  
     this.ambLight = new AmbientLight(0xffffff);
     this.ambLight.name = "ambLight";
     this.ambLight.intensity = 0.72;
@@ -306,10 +275,10 @@ export class MaskRevealView {
 
     this.loadModel();
 
-    this.menu.position.z = 0.04;
-    this.menu.position.y = -0.72;
-    this.menu.position.x = this.menu.width * -0.5;
-    this.scene.add(this.menu);
+    // this.menu.position.z = 0.04;
+    // this.menu.position.y = -0.72;
+    // this.menu.position.x = this.menu.width * -0.5;
+    // this.scene.add(this.menu);
 
     let speed = 8;
     gsap.fromTo(
@@ -371,7 +340,7 @@ export class MaskRevealView {
       this.bookWrapper.add(gltf.scene);
 
       this.flipTimeline.fromTo(
-        firstPage.morphTargetInfluences,
+        firstPage.morphTargetInfluences as number[],
         { 0: 0, 1: 1 },
         {
           duration: 0.5,
@@ -382,7 +351,7 @@ export class MaskRevealView {
         0.5
       );
       this.flipTimeline.to(
-        firstPage.morphTargetInfluences,
+        firstPage.morphTargetInfluences as number[],
         { duration: 0.5, 0: 0, 1: 1, ease: "none" },
         1
       );
@@ -430,7 +399,7 @@ export class MaskRevealView {
       if (index > 0) {
         this.flipTimeline.fromTo(
           (this.pages[index - 1].children[1] as THREE.Mesh)
-            .morphTargetInfluences,
+            .morphTargetInfluences as number[],
           {
             0: 0,
             1: 1,
@@ -440,7 +409,7 @@ export class MaskRevealView {
         );
         this.flipTimeline.to(
           (this.pages[index - 1].children[1] as THREE.Mesh)
-            .morphTargetInfluences,
+            .morphTargetInfluences as number[],
           {
             duration: 0.5,
             0: 0,
@@ -623,17 +592,11 @@ export class MaskRevealView {
           ease: "power1.inOut",
           onComplete: (args) => {
             this.ON_LANDING_SCREEN = true;
-
             document.body.addEventListener("click", this.enterBook);
-            gsap.to(this.enterButton, {
-              opacity: 1,
-              duration: 1,
-              pointerEvents: "auto",
-            });
           },
         });
       } else {
-        this.enterBook(null);
+        this.enterBook(null as any);
       }
     }
   };
@@ -668,16 +631,16 @@ export class MaskRevealView {
     let normalMap = useNormalMap
       ? new THREE.TextureLoader().load(NormalMap, this.uploadTexture)
       : null;
-    this.menu = new Menu(
-      this.renderer,
-      this.pageDatas.length + 2,
-      normalMap,
-      rough,
-      bump,
-      this.uploadTexture,
-      this.changePage
-    );
-    this.menu.visible = false;
+    // this.menu = new Menu(
+    //   this.renderer,
+    //   this.pageDatas.length + 2,
+    //   normalMap as any,
+    //   rough,
+    //   bump,
+    //   this.uploadTexture,
+    //   this.changePage
+    // );
+    // this.menu.visible = false;
 
     cover.flipY = false;
     coverBack.flipY = false;
@@ -735,7 +698,6 @@ export class MaskRevealView {
     });
   }
 
-
   public isActive = (value: boolean) => {
     if (!this._isActive && value === true) {
       this.render();
@@ -749,55 +711,11 @@ export class MaskRevealView {
   private render = (time = 0) => {
     // this.stats.begin();
     this.animationFrame = requestAnimationFrame(this.render);
-    // this.texture.needsUpdate = true;
-    this.mouseTracker.raf();
-    if (this.ENTERING) {
-      this.pageMaterials.forEach((mat, index) => {
-        this.offsetX = this.pages[index].rotation.z;
-        if (index > 0) {
-          this.offsetX -= Math.PI - this.pages[index - 1].rotation.z;
-        } else {
-          this.offsetX -= (Math.PI - this.cover.rotation.z) * 0.5;
-        }
-        mat.userData.shader?.uniforms.map2Offset.value.set(
-          this.mouseTracker.pos.xEased * -0.02 +
-            this.ambientMove.x +
-            this.offsetX * 0.1,
-          this.mouseTracker.pos.yEased * -0.02 + this.ambientMove.y
-        );
-      });
-    }
-    // console.log(this.mouseTracker.pos.xEased, this.mouseTracker.pos.xNormalizedFromCenter)
-    if (!this.LANDSCAPE_MODE) {
-      this.cameraWrapper.position.y =
-        this.mouseTracker.pos.yEased * -0.2 +
-        this.ambientMove.y * this.ambientMoveFactor;
-      // this.cameraWrapper.position.y = this.mouseTracker.pos.distanceFromCenter * -0.7 + this.ambientMove.y * 2;
-      this.cameraWrapper.position.x =
-        this.mouseTracker.pos.xEased * -this.xMoveAmount +
-        this.ambientMove.x * this.ambientMoveFactor;
-    }
-    this.dirLight.position.x =
-      this.mouseTracker.pos.xEased * -0.2 +
-      this.ambientMove.x * this.ambientMoveFactor;
-
-    //Raycast:
-    // this.mouse.x = (this.mouseTracker.mouse.eventX / this.dim.width) * 2 - 1;
-    // this.mouse.y = -(this.mouseTracker.mouse.eventY / this.dim.height) * 2 + 1;
-    // this.raycaster.setFromCamera(this.mouse, this.camera);
 
     //check rays
-    if (this.ON_LANDING_SCREEN) {
-      if (
-        this.raycaster.intersectObjects(this.coverWrapper.children).length > 0
-      ) {
-        // this.hoverBook(null);
-      } else if (!this.hoveringMouse) {
-        // this.leaveBook(null);
-      }
-    } else if (this.ENTERED && !this.menu.SMALL_MENU_MODE) {
-      this.menu.checkIntersection(this.raycaster);
-    }
+    // if (!this.ON_LANDING_SCREEN && this.ENTERED && !this.menu.SMALL_MENU_MODE) {
+    //   this.menu.checkIntersection(this.raycaster);
+    // }
 
     if (this.controls) {
       this.controls.update();
@@ -813,19 +731,8 @@ export class MaskRevealView {
     this.mouse.x = (event.clientX / this.dim.width) * 2 - 1;
     this.mouse.y = -(event.clientY / this.dim.height) * 2 + 1;
     this.raycaster.setFromCamera(this.mouse, this.camera);
-    this.menu.clickHandler(this.raycaster);
+    // this.menu.clickHandler(this.raycaster);
   };
-
-  private setCaptionTimelineEnabled(value: boolean) {
-    if (value === true) {
-      this.captionTimeline.paused(false);
-      this.captionTimeline.progress(this.flipTimeline.progress());
-      this.flipTimeline.add(this.captionTimeline, 0);
-    } else {
-      this.captionTimeline.paused(true);
-      this.flipTimeline.remove(this.captionTimeline);
-    }
-  }
 
   private LANDSCAPE_MODE = false;
   private resize = () => {
@@ -873,30 +780,29 @@ export class MaskRevealView {
       this.camera.position.y = -6;
     }
     let scale = 1500 / this.bookPixelWidth;
-    this.menu.scale.set(scale, scale, scale);
-    if (!this.LANDSCAPE_MODE && this.dim.x <= 600) {
-      this.menu.SMALL_MENU_MODE = true;
-      let px = h * (1 / this.dim.y);
-      this.menu.position.y = -h / 2 - px * 40;
-      if (this.ENTERED) {
-        this.currentViewYOffset = 100;
-        this.camera.setViewOffset(
-          this.dim.x,
-          this.dim.y,
-          0,
-          this.currentViewYOffset,
-          this.dim.x,
-          this.dim.y
-        );
-      }
-    } else {
-      this.menu.SMALL_MENU_MODE = false;
-      this.currentViewYOffset = 0;
-      this.camera.clearViewOffset();
-      this.menu.position.y = -0.625 - 0.08 * scale;
-    }
-    this.setCaptionTimelineEnabled(this.menu.SMALL_MENU_MODE);
-    this.menu.position.x = this.menu.width * scale * -0.5;
+    // this.menu.scale.set(scale, scale, scale);
+    // if (!this.LANDSCAPE_MODE && this.dim.x <= 600) {
+    //   this.menu.SMALL_MENU_MODE = true;
+    //   let px = h * (1 / this.dim.y);
+    //   this.menu.position.y = -h / 2 - px * 40;
+    //   if (this.ENTERED) {
+    //     this.currentViewYOffset = 100;
+    //     this.camera.setViewOffset(
+    //       this.dim.x,
+    //       this.dim.y,
+    //       0,
+    //       this.currentViewYOffset,
+    //       this.dim.x,
+    //       this.dim.y
+    //     );
+    //   }
+    // } else {
+    //   this.menu.SMALL_MENU_MODE = false;
+    //   this.currentViewYOffset = 0;
+    //   this.camera.clearViewOffset();
+    //   this.menu.position.y = -0.625 - 0.08 * scale;
+    // }
+    // this.menu.position.x = this.menu.width * scale * -0.5;
 
     this.scene.remove(this.cornerMarker);
 
@@ -923,7 +829,6 @@ export class MaskRevealView {
     }
 
     //Update mouse
-    this.mouseTracker.resize();
     this.setPageKill();
     gsap.set(this.draggableElement, {
       left: this.currPageIndex * -this.dim.width,
@@ -962,9 +867,7 @@ export class MaskRevealView {
         this.pageDatas.length + 1,
         Math.round(page)
       );
-      this.checkNavArrows();
       this.flipTimeline.progress(progress);
-      // this.captionTimeline.progress(progress);
     }
   };
 
@@ -989,52 +892,11 @@ export class MaskRevealView {
         ease: "power3.inOut",
       });
     }
-    this.checkNavArrows();
+    // this.checkNavArrows();
   };
 
   private leftAllowed = true;
   private rightAllowed = true;
-  private checkNavArrows = () => {
-    if (this.currPageIndex === 0) {
-      if (this.leftAllowed === true) {
-        this.leftAllowed = false;
-        gsap.to(this.navArrows[0], {
-          opacity: 0.2,
-          pointerEvents: "none",
-          duration: 0.5,
-        });
-      }
-    } else {
-      if (this.leftAllowed === false) {
-        this.leftAllowed = true;
-        gsap.to(this.navArrows[0], {
-          opacity: 1,
-          pointerEvents: "auto",
-          duration: 0.5,
-        });
-      }
-    }
-    if (this.currPageIndex === this.pages.length + 1) {
-      if (this.rightAllowed === true) {
-        this.rightAllowed = false;
-        gsap.to(this.navArrows[1], {
-          opacity: 0.2,
-          pointerEvents: "none",
-          duration: 0.5,
-        });
-      }
-    } else {
-      if (this.rightAllowed === false) {
-        this.rightAllowed = true;
-        gsap.to(this.navArrows[1], {
-          opacity: 1,
-          pointerEvents: "auto",
-          duration: 0.5,
-        });
-      }
-    }
-    this.menu.updateActiveIndex(this.currPageIndex);
-  };
 
   private setPageKill = () => {
     gsap.killTweensOf(this.draggableElement);
@@ -1052,44 +914,6 @@ export class MaskRevealView {
         }
       }
     });
-
-    this.navArrows[0].addEventListener("click", (event) => {
-      // event.preventDefault();
-      this.setCurrentPage(this.currPageIndex - 1);
-      // return false;
-    });
-    this.navArrows[1].addEventListener("click", (event) => {
-      // event.preventDefault();
-      this.setCurrentPage(this.currPageIndex + 1);
-      // return false;
-    });
-    /*        this.navArrows[0].addEventListener('mouseenter', () => {
-                    if (this.currPageIndex > 0) {
-                        let fakeIndex = this.currPageIndex - 0.05;
-                        gsap.to(this.draggableElement, {left: fakeIndex * -this.dim.width, duration: 0.5});
-                        gsap.to(this.draggableElement, {delay: 0.5, x: this.currPageIndex * -this.dim.width, duration: 0.5});
-                        gsap.to(this.flipTimeline, {progress: fakeIndex / (this.pageDatas.length + 1), duration: 0.5});
-                        gsap.to(this.flipTimeline, {
-                            delay: 0.5,
-                            progress: this.currPageIndex / (this.pageDatas.length + 1),
-                            duration: 1
-                        });
-                    }
-                });
-                this.navArrows[1].addEventListener('mouseenter', () => {
-                    if (this.currPageIndex < this.pages.length) {
-                        let fakeIndex = this.currPageIndex + 0.05;
-                        gsap.to(this.draggableElement, {left: fakeIndex * -this.dim.width, duration: 0.5});
-                        gsap.to(this.draggableElement, {delay: 0.5, x: this.currPageIndex * -this.dim.width, duration: 0.5});
-                        gsap.to(this.flipTimeline, {progress: fakeIndex / (this.pageDatas.length + 1), duration: 0.5});
-                        gsap.to(this.flipTimeline, {
-                            delay: 0.5,
-                            progress: this.currPageIndex / (this.pageDatas.length + 1),
-                            duration: 1
-                        });
-                    }
-                });*/
-    // this.navArrows[0].addEventListener('mouseleave', this.leaveArrow);
   }
 
   private enterBook = (event: MouseEvent) => {
@@ -1100,60 +924,50 @@ export class MaskRevealView {
     this.hoverAnimation?.kill();
     let timeline = gsap.timeline({
       onComplete: (args) => {
-        /*
-                let tl = gsap.timeline({repeat: -1, repeatDelay: 2, delay: 2});
-                tl.to(this.cover.rotation, {duration: 0.75, z: Math.PI / 32, ease: 'back.out'});
-                tl.to(this.cover.rotation, {duration: 0.25, z: Math.PI / 32 + 0.15, yoyo: true, repeat: 2, ease: 'power2.inOut'});
-                tl.to(this.cover.rotation, {duration: 0.5, z: 0, delay: 0.5, ease: 'sine.out'});*/
         this.currPageIndex = 1;
         gsap.set(this.draggableElement, {
           left: this.currPageIndex * -this.dim.width,
         });
-        gsap.to(this.navArrows, {
-          opacity: 1,
-          duration: 1,
-          pointerEvents: "auto",
-        });
-        gsap.to(".captions", { autoAlpha: 1, duration: 1 });
+
         document.body.addEventListener("click", this.clickHandler);
         this.draggable.enable();
-        this.menu.show();
-        this.preText.parentNode.removeChild(this.preText);
+        // this.menu.show();
+
         this.coverBottomBack.visible = false;
         this.camera.zoom = 1;
         this.camera.updateProjectionMatrix();
       },
     });
-    if (this.menu.SMALL_MENU_MODE) {
-      timeline.fromTo(
-        this,
-        { currentViewYOffset: 0 },
-        {
-          duration: 1.5,
-          currentViewYOffset: 100,
-          onUpdate: () => {
-            this.camera.setViewOffset(
-              this.dim.x,
-              this.dim.y,
-              0,
-              this.currentViewYOffset,
-              this.dim.x,
-              this.dim.y
-            );
-          },
-        },
-        1.5
-      );
-    }
-    timeline.to(
-      this.camera,
-      {
-        zoom: 1,
-        duration: 1.5,
-        onUpdate: () => this.camera.updateProjectionMatrix,
-      },
-      1.5
-    );
+    // if (this.menu.SMALL_MENU_MODE) {
+    //   timeline.fromTo(
+    //     this,
+    //     { currentViewYOffset: 0 },
+    //     {
+    //       duration: 1.5,
+    //       currentViewYOffset: 100,
+    //       onUpdate: () => {
+    //         this.camera.setViewOffset(
+    //           this.dim.x,
+    //           this.dim.y,
+    //           0,
+    //           this.currentViewYOffset,
+    //           this.dim.x,
+    //           this.dim.y
+    //         );
+    //       },
+    //     },
+    //     1.5
+    //   );
+    // }
+    // timeline.to(
+    //   this.camera,
+    //   {
+    //     zoom: 1,
+    //     duration: 1.5,
+    //     onUpdate: () => this.camera.updateProjectionMatrix,
+    //   },
+    //   1.5
+    // );
     timeline.to(this, { ambientMoveFactor: 2, duration: 1.5 }, 0);
     timeline.to(this.cover.rotation, { duration: 0.75, z: 0 }, 0);
     timeline.to(
@@ -1211,9 +1025,6 @@ export class MaskRevealView {
       { z: this.camera.userData.positionZ, duration: 3, ease: "power3.inOut" },
       3
     );
-    /*
-        timeline.to(this.bookWrapper.position, {y: 0, duration: 3.75, ease: 'elastic.out(1, 0.4)'}, 0);
-        timeline.to(this.bookWrapper.rotation, {z: 0, duration: 3.75, ease: 'elastic.out(1, 0.4)'}, 0);*/
     timeline.to(
       this.cameraLookAtPosition.position,
       { y: 0, duration: 2.55, ease: "power3.inOut" },
@@ -1230,8 +1041,6 @@ export class MaskRevealView {
       0
     );
     timeline.to(this, { xMoveAmount: 0.2, duration: 3 }, 0);
-    // timeline.to(this.bookWrapper.position, {y: 0, duration: 3.75, ease: 'back.out(2)'}, 0);
-    // timeline.to(this.bookWrapper.rotation, {z: 0, duration: 3.75, ease: 'back.out(2)'}, 0);
     timeline.to(
       this.groundPlane.material,
       { roughness: 0.34, metalness: 0.7, duration: 2, ease: "sine.out" },
@@ -1243,15 +1052,11 @@ export class MaskRevealView {
     if (this.SKIP_INTRO) {
       timeline.progress(1);
     }
-    this.preText.classList.add("hide");
     return false;
   };
 
   private idleTimeline: gsap.core.Timeline;
   private hoverAnimation: gsap.core.Tween;
-  private hovering = false;
-  private hoveringMouse = false;
-  
 
   private changePage = (newIndex: number) => {
     this.setCurrentPage(newIndex);
