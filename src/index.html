@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <style>
+        #CALC_HEIGHT_DIV {
+            position: fixed;
+            pointer-events: none;
+            visibility: hidden;
+            height: 100vh !important;
+            top: -100vh;
+            left: -100vw
+        }
+
+        .draggable {
+            width: 1300%;
+            height: 100%
+        }
+
+        #canvasContainer,
+        .draggable {
+            position: absolute;
+            top: 0;
+            left: 0
+        }
+
+        #canvasContainer {
+            right: 0;
+            bottom: 0;
+            overflow: hidden
+        }
+    </style>
+</head>
+
+<body>
+    <div id="canvasContainer">
+        <div class="draggable"> 
+            <button class="left navArrow" data-clickable="true"><span>Previous page</span></button> 
+            <button class="navArrow" data-clickable="true"><span>Next page</span></button>
+        </div>
+        <a href="#page-1" class="enterButton"> <span>Open book</span> </a>
+        <div id="CALC_HEIGHT_DIV"></div>
+    </div>
+    <script src="./index.ts"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "name": "nc2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/dat.gui": "^0.7.7",
+    "@types/gsap": "^3.0.0",
+    "@types/three": "^0.130.0",
+    "parcel-bundler": "^1.12.5",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "dat.gui": "^0.7.7",
+    "gsap": "^3.7.0",
+    "three": "^0.130.1"
+  }
+}
