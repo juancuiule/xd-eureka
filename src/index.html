@@ -1,47 +1,98 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <style>
-        #CALC_HEIGHT_DIV {
-            position: fixed;
-            pointer-events: none;
-            visibility: hidden;
-            height: 100vh !important;
-            top: -100vh;
-            left: -100vw
-        }
+      :root {
+        --vertical-padding-nav: 4px;
+        --nav-height: 60px;
+        --margin-top: calc(var(--nav-height) + var(--vertical-padding-nav) * 2);
+      }
 
-        .draggable {
-            width: 1300%;
-            height: 100%
-        }
+      #CALC_HEIGHT_DIV {
+        position: fixed;
+        pointer-events: none;
+        visibility: hidden;
+        height: 100vh !important;
+        top: -100vh;
+        left: -100vw;
+      }
 
-        #canvasContainer,
-        .draggable {
-            position: absolute;
-            top: 0;
-            left: 0
-        }
+      .draggable {
+        width: 1300%;
+        height: calc(100vh - var(--margin-top));
+        margin-top: var(--margin-top);
+      }
 
-        #canvasContainer {
-            right: 0;
-            bottom: 0;
-            overflow: hidden
-        }
+      #canvasContainer,
+      .draggable {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      #canvasContainer {
+        right: 0;
+        bottom: 0;
+        overflow: hidden;
+        height: 100vh;
+      }
+
+      body {
+        background: linear-gradient(
+          287.48deg,
+          #14273c 0%,
+          rgba(20, 39, 60, 0.8) 100%
+        );
+        margin: 0;
+      }
+
+      nav {
+        height: var(--nav-height);
+        padding: var(--vertical-padding-nav) 24px;
+        max-width: 1660px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 999;
+        position: relative;
+      }
+
+      nav .nav-left,
+      nav .nav-logo,
+      nav .nav-right {
+        min-width: 60px;
+        min-height: 60px;
+      }
+
+      nav .nav-left {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
+    <nav>
+      <div class="nav-left">
+        <a href="https://guau.ar/eureka">
+          <img src="assets/images/arrow-back.svg" width="32px" height="32px" />
+        </a>
+      </div>
+      <div class="nav-logo">
+        <img src="assets/images/logo.svg" width="auto" height="60" />
+      </div>
+      <div class="nav-right"></div>
+    </nav>
     <div id="canvasContainer">
-        <div class="draggable"> 
-            <button class="left navArrow" data-clickable="true"><span>Previous page</span></button> 
-            <button class="navArrow" data-clickable="true"><span>Next page</span></button>
-        </div>
-        <a href="#page-1" class="enterButton"> <span>Open book</span> </a>
-        <div id="CALC_HEIGHT_DIV"></div>
+      <div class="draggable"></div>
     </div>
     <script src="./index.ts"></script>
-</body>
+  </body>
 </html>

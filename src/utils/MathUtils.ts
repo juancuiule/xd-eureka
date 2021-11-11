@@ -6,8 +6,9 @@ export function randomInteger(min: number, max: number): number {
 }
 
 export function checkWebP(filename: string) {
-  return (window as any).Main.WEBP_SUPPORTED && false
-    ? filename.replace(".png", ".webp").replace("images/", "images_webp/")
+  // return filename;
+  return (window as any).Main.WEBP_SUPPORTED
+    ? filename.replace(".png", ".webp").replace("/png/", "/webp/")
     : filename;
 }
 export function fitCameraToSelection(
@@ -87,7 +88,7 @@ export function radiansToDegrees(radians: number) {
 }
 
 /** This method will calculate how big a circle is needed to make the square fit in it */
-export const squareToCircle = (width: number) => Math.SQRT2 * width
+export const squareToCircle = (width: number) => Math.SQRT2 * width;
 
 /** This method will calculate the largest square that can fit in the circle */
-export const circleToSquare = (radius: number) => Math.SQRT1_2 * radius
+export const circleToSquare = (radius: number) => Math.SQRT1_2 * radius;
