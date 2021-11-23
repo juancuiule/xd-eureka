@@ -704,11 +704,49 @@ export class MaskRevealView {
     }
   };
 
+  private showShare = () => {
+    const shareBox = document.querySelector(".share-box");
+    if (shareBox !== null) {
+      shareBox.classList.add("visible");
+    }
+
+    const canvasContainer = document.querySelector("#canvasContainer");
+    if (canvasContainer !== null) {
+      canvasContainer.classList.add("no-action");
+    }
+
+    const draggable = document.querySelector(".draggable");
+    if (draggable !== null) {
+      draggable.classList.add("no-action");
+    }
+  };
+
+  private hideShare = () => {
+    const shareBox = document.querySelector(".share-box");
+    if (shareBox !== null) {
+      shareBox.classList.remove("visible");
+    }
+
+    const canvasContainer = document.querySelector("#canvasContainer");
+    if (canvasContainer !== null) {
+      canvasContainer.classList.remove("no-action");
+    }
+
+    const draggable = document.querySelector(".draggable");
+    if (draggable !== null) {
+      draggable.classList.remove("no-action");
+    }
+  };
+
   private dragUpdate = () => {
     let page = (this.draggable.x / this.dim.width) * -1;
+    if (page > this.pages.length + 0.5) {
+      this.showShare();
+    } else {
+      this.hideShare();
+    }
     if (this.flipTimeline) {
       let progress = page / (this.pageDatas.length + 1);
-      // console.log(progress, page);
       this.currPageIndex = gsap.utils.clamp(
         0,
         this.pageDatas.length + 1,
@@ -719,6 +757,12 @@ export class MaskRevealView {
   };
 
   private setCurrentPage = (index: number) => {
+    if (index > this.pages.length) {
+      this.showShare();
+    } else {
+      this.hideShare();
+    }
+
     if (index < 0) {
       index = 0;
     } else if (index > this.pages.length + 1) {

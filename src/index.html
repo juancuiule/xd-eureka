@@ -13,6 +13,44 @@
         --margin-top: calc(var(--nav-height) + var(--vertical-padding-nav) * 2);
       }
 
+      * {
+        box-sizing: border-box;
+        font-family: Gotham;
+      }
+
+      body {
+        background: linear-gradient(
+          287.48deg,
+          #14273c 0%,
+          rgba(20, 39, 60, 0.8) 100%
+        );
+        margin: 0;
+      }
+
+      @font-face {
+        font-family: Gotham;
+        src: url("assets/fonts/Gotham-Book.otf") format("opentype");
+        font-weight: 400;
+      }
+
+      @font-face {
+        font-family: Gotham;
+        src: url("assets/fonts/Gotham-Medium.otf") format("opentype");
+        font-weight: 500;
+      }
+
+      @font-face {
+        font-family: Gotham;
+        src: url("assets/fonts/Gotham-Bold.otf") format("opentype");
+        font-weight: 600;
+      }
+
+      @font-face {
+        font-family: Gotham;
+        src: url("assets/fonts/Gotham-Black.otf") format("opentype");
+        font-weight: 700;
+      }
+
       #CALC_HEIGHT_DIV {
         position: fixed;
         pointer-events: none;
@@ -42,13 +80,25 @@
         height: 100vh;
       }
 
-      body {
-        background: linear-gradient(
-          287.48deg,
-          #14273c 0%,
-          rgba(20, 39, 60, 0.8) 100%
-        );
-        margin: 0;
+      .extra {
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: 50vw;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        pointer-events: all;
+      }
+
+      h2 {
+        font-family: Gotham;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 36px;
+        line-height: 43px;
+        color: #0e243c;
       }
 
       nav {
@@ -75,7 +125,129 @@
         justify-content: flex-start;
         align-items: center;
       }
+
+      .share-box {
+        padding: 0 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        height: 60%;
+      }
+
+      .share-box.visible {
+        opacity: 1;
+      }
+
+      .share {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        max-width: 360px;
+        max-height: 450px;
+        height: 100%;
+      }
+
+      .share-buttons {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .share-buttons a {
+        width: 70px;
+        height: 70px;
+        border-radius: 100%;
+        background: #14273c;
+        box-shadow: 0px 0px 4px rgba(20, 39, 60, 0.2);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+        text-decoration: none;
+      }
+
+      .btn-fill {
+        background: #14273c;
+        border-radius: 8px;
+        height: 70px;
+        padding: 24px 40px;
+        text-transform: uppercase;
+        color: #f6f6f6;
+        font-size: 18px;
+        line-height: 22px;
+        border: none;
+        text-decoration: none;
+        text-align: center;
+        font-weight: 900;
+        width: fit-content;
+      }
+
+      .btn-link {
+        background: transparent;
+        border: none;
+        color: #ffffff;
+        font-size: 16px;
+        line-height: 24px;
+        margin-top: 12px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        padding: 0;
+        width: fit-content;
+        margin: 12px auto 0 auto;
+      }
+
+      #copy-banner {
+        min-width: 120px;
+        width: fit-content;
+        height: 60px;
+        background-color: #0e243c;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        margin: 0 auto;
+        z-index: 999;
+        margin-top: 20px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        padding: 4px 12px
+      }
+
+      #copy-banner.visible {
+        opacity: 1;
+      }
     </style>
+    <script>
+      const showCopyBanner = (err) => {
+        const banner = document.getElementById("copy-banner");
+        banner.classList.add("visible");
+        if (err !== undefined) {
+          banner.innerText = "Error al copiar el link";
+        } else {
+          banner.innerText = "Link copiado";
+        }
+        setTimeout(() => {
+          banner.classList.remove("visible");
+        }, 3000);
+      };
+
+      const copyToClipboard = () => {
+        navigator.clipboard
+          .writeText("https://guau.ar/eureka/leer")
+          .then(() => {
+            showCopyBanner();
+          })
+          .catch((err) => {
+            showCopyBanner(err);
+            console.log("Oops, unable to copy", err);
+          });
+      };
+    </script>
   </head>
 
   <body>
@@ -90,9 +262,34 @@
       </div>
       <div class="nav-right"></div>
     </nav>
+
+    <div id="copy-banner">Copiado</div>
+
     <div id="canvasContainer">
-      <div class="draggable"></div>
+      <div class="draggable">
+        <div class="extra">
+          <div class="share-box">
+            <div class="share">
+              <h2>Compartí el libro</h2>
+              <div class="share-buttons">
+                <a href="#"><img src="assets/images/icons/facebook.svg" /></a>
+                <a href="#"><img src="assets/images/icons/twitter.svg" /></a>
+                <a href="#"><img src="assets/images/icons/whatsapp.svg" /></a>
+              </div>
+              <button class="btn-link" onclick="copyToClipboard()">
+                <img src="assets/images/icons/copy.png" />
+                copiar link
+              </button>
+              <h2>Conocé más sobre Eureka</h2>
+              <a href="https://guau.ar/eureka/" class="btn-fill"
+                >Conocé Eureka</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
     <script src="./index.ts"></script>
   </body>
 </html>
