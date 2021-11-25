@@ -54,4 +54,36 @@ class Main {
 window.onload = () => {
   // @ts-ignore
   window.Main = new Main();
+
+  const showCopyBanner = (err?: any) => {
+    const banner = document.getElementById("copy-banner");
+    if (banner !== null) {
+      banner.classList.add("visible");
+      if (err !== undefined) {
+        banner.innerText = "Error al copiar el link";
+      } else {
+        banner.innerText = "Link copiado";
+      }
+      setTimeout(() => {
+        banner.classList.remove("visible");
+      }, 3000);
+    }
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard
+      .writeText("https://guau.ar/eureka/leer")
+      .then(() => {
+        showCopyBanner();
+      })
+      .catch((err) => {
+        showCopyBanner(err);
+        console.log("Oops, unable to copy", err);
+      });
+  };
+
+  const copyLinkBtn = document.getElementById("copy-link-btn");
+  if (copyLinkBtn !== null) {
+    copyLinkBtn.onclick = copyToClipboard;
+  }
 };

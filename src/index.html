@@ -222,32 +222,6 @@
         opacity: 1;
       }
     </style>
-    <script>
-      const showCopyBanner = (err) => {
-        const banner = document.getElementById("copy-banner");
-        banner.classList.add("visible");
-        if (err !== undefined) {
-          banner.innerText = "Error al copiar el link";
-        } else {
-          banner.innerText = "Link copiado";
-        }
-        setTimeout(() => {
-          banner.classList.remove("visible");
-        }, 3000);
-      };
-
-      const copyToClipboard = () => {
-        navigator.clipboard
-          .writeText("https://guau.ar/eureka/leer")
-          .then(() => {
-            showCopyBanner();
-          })
-          .catch((err) => {
-            showCopyBanner(err);
-            console.log("Oops, unable to copy", err);
-          });
-      };
-    </script>
   </head>
 
   <body>
@@ -276,7 +250,7 @@
                 <a href="#"><img src="assets/images/icons/twitter.svg" /></a>
                 <a href="#"><img src="assets/images/icons/whatsapp.svg" /></a>
               </div>
-              <button class="btn-link" onclick="copyToClipboard()">
+              <button class="btn-link" id="copy-link-btn">
                 <img src="assets/images/icons/copy.png" />
                 copiar link
               </button>
