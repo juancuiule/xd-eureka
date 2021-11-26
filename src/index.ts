@@ -60,9 +60,9 @@ window.onload = () => {
     if (banner !== null) {
       banner.classList.add("visible");
       if (err !== undefined) {
-        banner.innerText = "Error al copiar el link";
+        banner.innerText = "Error al copiar el enlace";
       } else {
-        banner.innerText = "Link copiado";
+        banner.innerText = "Enlace copiado";
       }
       setTimeout(() => {
         banner.classList.remove("visible");

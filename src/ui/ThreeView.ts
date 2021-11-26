@@ -491,6 +491,7 @@ export class MaskRevealView {
       this.resize();
       this.isActive(true);
       this.enterBook();
+      document.getElementById('loading')?.classList.add('hidden')
     }
   };
 

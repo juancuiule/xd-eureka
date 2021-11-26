@@ -49230,6 +49230,8 @@ var MaskRevealView = /*#__PURE__*/function () {
     this.mouse = new THREE.Vector2();
 
     this.modelsLoadedCheck = function () {
+      var _a;
+
       if (_this.modelsLoaded === 2 && _this.texturesLoaded) {
         _this.setupPages();
 
@@ -49242,6 +49244,8 @@ var MaskRevealView = /*#__PURE__*/function () {
         _this.isActive(true);
 
         _this.enterBook();
+
+        (_a = document.getElementById('loading')) === null || _a === void 0 ? void 0 : _a.classList.add('hidden');
       }
     };
 
@@ -50085,9 +50089,9 @@ window.onload = function () {
       banner.classList.add("visible");
 
       if (err !== undefined) {
-        banner.innerText = "Error al copiar el link";
+        banner.innerText = "Error al copiar el enlace";
       } else {
-        banner.innerText = "Link copiado";
+        banner.innerText = "Enlace copiado";
       }
 
       setTimeout(function () {
@@ -50139,7 +50143,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50746" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62534" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
