@@ -92,6 +92,13 @@
         pointer-events: all;
       }
 
+      @media (max-width: 768px) {
+        .extra {
+          width: 100vw;
+          height: 100vh;
+        }
+      }
+
       h2 {
         font-family: Gotham;
         font-style: normal;
@@ -134,6 +141,7 @@
         opacity: 0;
         transition: opacity 0.3s ease-in-out;
         height: 60%;
+        backdrop-filter: blur(10px);
       }
 
       .share-box.visible {
