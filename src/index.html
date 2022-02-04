@@ -45,6 +45,20 @@
     <meta property="og:image:height" content="1200" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="og:type" content="website" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7XN211WD0G"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-7XN211WD0G");
+    </script>
     <style>
       :root {
         --vertical-padding-nav: 4px;
@@ -130,7 +144,6 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        pointer-events: all;
       }
 
       @media (max-width: 768px) {
@@ -183,10 +196,12 @@
         transition: opacity 0.3s ease-in-out;
         height: 60%;
         backdrop-filter: blur(10px);
+        pointer-events: none;
       }
 
       .share-box.visible {
         opacity: 1;
+        pointer-events: all;
       }
 
       .share {
@@ -269,6 +284,7 @@
 
       #copy-banner.visible {
         opacity: 1;
+        pointer-events: all;
       }
 
       .loading.hidden {
@@ -402,11 +418,15 @@
     <nav>
       <div class="nav-left">
         <a href="https://guau.ar/eureka">
-          <img src="assets/images/arrow-back.svg" width="32px" height="32px" />
+          <img
+            src="./assets/images/arrow-back.svg"
+            width="32px"
+            height="32px"
+          />
         </a>
       </div>
       <div class="nav-logo">
-        <img src="assets/images/logo.svg" width="auto" height="60" />
+        <img src="./assets/images/logo.svg" width="auto" height="60" />
       </div>
       <div class="nav-right"></div>
     </nav>
@@ -437,19 +457,19 @@
               <div class="share-buttons">
                 <a
                   href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fguau.ar%2Feureka"
-                  ><img src="assets/images/icons/facebook.svg"
+                  ><img src="./assets/images/icons/facebook.svg"
                 /></a>
                 <a
                   href="https://twitter.com/intent/tweet/?url=https%3A%2F%2Fguau.ar%2Feureka&text=Sumergite en esta aventura"
-                  ><img src="assets/images/icons/twitter.svg"
+                  ><img src="./assets/images/icons/twitter.svg"
                 /></a>
                 <a
                   href="https://api.whatsapp.com/send?phone=&text=Sumergite en esta aventura https%3A%2F%2Fguau.ar%2Feureka"
-                  ><img src="assets/images/icons/whatsapp.svg"
+                  ><img src="./assets/images/icons/whatsapp.svg"
                 /></a>
               </div>
               <button class="btn-link" id="copy-link-btn">
-                <img src="assets/images/icons/copy.png" />
+                <img src="./assets/images/icons/copy.png" />
                 copiar link
               </button>
               <h2>Conocé más sobre Eureka</h2>
@@ -461,6 +481,7 @@
         </div>
       </div>
     </div>
+    <audio id="audio" src="./assets/audios/track1.mp3" controls></audio>
 
     <script src="./index.ts"></script>
   </body>

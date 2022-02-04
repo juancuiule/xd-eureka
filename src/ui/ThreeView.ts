@@ -38,6 +38,8 @@ import {
 } from "../ui/MeshStandardMaterialParallax";
 import { checkWebP, fitCameraToSelection } from "../utils/MathUtils";
 
+import { audioTracks } from "./AudioTracks";
+
 gsap.registerPlugin(InertiaPlugin, Draggable);
 
 //For webgl1 browsers:
@@ -135,11 +137,21 @@ export class MaskRevealView {
   private lastPageBookMoveTween: gsap.core.Tween;
   private coverBottomBack: Mesh;
 
+  private audio: HTMLAudioElement | null = document.getElementById(
+    "audio"
+  ) as HTMLAudioElement;
+
   constructor(parent: HTMLElement) {
     this._parent = parent;
 
     this.setupScene();
     this.setupDraggable();
+    if (this.audio !== null) {
+      this.audio.addEventListener("ended", () => {
+        this.pauseAudio();
+        this.setCurrentPage(this.currPageIndex + 1);
+      });
+    }
   }
 
   private setupDraggable() {
@@ -153,6 +165,7 @@ export class MaskRevealView {
       bounds: this._parent,
       inertia: true,
       onDragStart: () => {
+        this.pauseAudio();
         gsap.killTweensOf(this.flipTimeline);
       },
       onClick: (e) => {
@@ -165,7 +178,9 @@ export class MaskRevealView {
         }
       },
       onDrag: this.dragUpdate,
-      onThrowUpdate: this.dragUpdate,
+      onDragEnd: this.dragEnd,
+      onThrowUpdate: this.throwUpdate,
+      onThrowComplete: this.throwComplete,
       allowNativeTouchScrolling: Boolean((window as any).Main.I_OS), //This currently breaks android scrolling / dragging.
       // allowEventDefault: true,
       snap: (value) => {
@@ -491,7 +506,7 @@ export class MaskRevealView {
       this.resize();
       this.isActive(true);
       this.enterBook();
-      document.getElementById('loading')?.classList.add('hidden')
+      document.getElementById("loading")?.classList.add("hidden");
     }
   };
 
@@ -739,7 +754,31 @@ export class MaskRevealView {
     }
   };
 
-  private dragUpdate = () => {
+  private pauseAudio = () => {
+    if (this.audio !== null) {
+      this.audio.pause();
+    }
+  };
+
+  private playAudio = () => {
+    if (this.audio !== null) {
+      this.audio.play();
+    }
+  };
+
+  private changeAudioSrcByIndex = (index: number) => {
+    if (this.audio !== null) {
+      if (Object.keys(audioTracks).includes(index.toString())) {
+        this.audio.src = audioTracks[index];
+      } else {
+        this.audio.src = "";
+      }
+    }
+  };
+
+  private dragEnd = () => {};
+
+  private updateProgress = () => {
     let page = (this.draggable.x / this.dim.width) * -1;
     if (page > this.pages.length + 0.5) {
       this.showShare();
@@ -757,12 +796,31 @@ export class MaskRevealView {
     }
   };
 
+  private dragUpdate = () => {
+    this.updateProgress();
+  };
+
+  private throwUpdate = () => {
+    this.updateProgress();
+  };
+
+  private throwComplete = () => {
+    this.changeAudioSrcByIndex(this.currPageIndex);
+    this.playAudio();
+  };
+
   private setCurrentPage = (index: number) => {
     if (index > this.pages.length) {
       this.showShare();
     } else {
       this.hideShare();
     }
+
+    this.pauseAudio();
+    setTimeout(() => {
+      this.changeAudioSrcByIndex(index);
+      this.playAudio();
+    }, 500);
 
     if (index < 0) {
       index = 0;

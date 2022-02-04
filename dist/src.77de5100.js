@@ -49075,7 +49075,48 @@ var MeshStandardMaterialParallax = /*#__PURE__*/function (_three_1$MeshStandard)
 }(three_1.MeshStandardMaterial);
 
 exports.MeshStandardMaterialParallax = MeshStandardMaterialParallax;
-},{"three":"../node_modules/three/build/three.module.js","../utils/MathUtils":"utils/MathUtils.ts"}],"ui/ThreeView.ts":[function(require,module,exports) {
+},{"three":"../node_modules/three/build/three.module.js","../utils/MathUtils":"utils/MathUtils.ts"}],"assets/audios/track1.mp3":[function(require,module,exports) {
+module.exports = "/track1.84a5e36b.mp3";
+},{}],"assets/audios/track2.mp3":[function(require,module,exports) {
+module.exports = "/track2.1f3fe63b.mp3";
+},{}],"assets/audios/track3.mp3":[function(require,module,exports) {
+module.exports = "/track3.c6fa889d.mp3";
+},{}],"assets/audios/track4.mp3":[function(require,module,exports) {
+module.exports = "/track4.39740b78.mp3";
+},{}],"assets/audios/track5.mp3":[function(require,module,exports) {
+module.exports = "/track5.ec395499.mp3";
+},{}],"ui/AudioTracks.ts":[function(require,module,exports) {
+"use strict";
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.audioTracks = void 0;
+
+var track1_mp3_1 = __importDefault(require("../assets/audios/track1.mp3"));
+
+var track2_mp3_1 = __importDefault(require("../assets/audios/track2.mp3"));
+
+var track3_mp3_1 = __importDefault(require("../assets/audios/track3.mp3"));
+
+var track4_mp3_1 = __importDefault(require("../assets/audios/track4.mp3"));
+
+var track5_mp3_1 = __importDefault(require("../assets/audios/track5.mp3"));
+
+exports.audioTracks = {
+  4: track1_mp3_1.default,
+  5: track2_mp3_1.default,
+  6: track3_mp3_1.default,
+  7: track4_mp3_1.default,
+  8: track5_mp3_1.default
+};
+},{"../assets/audios/track1.mp3":"assets/audios/track1.mp3","../assets/audios/track2.mp3":"assets/audios/track2.mp3","../assets/audios/track3.mp3":"assets/audios/track3.mp3","../assets/audios/track4.mp3":"assets/audios/track4.mp3","../assets/audios/track5.mp3":"assets/audios/track5.mp3"}],"ui/ThreeView.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -49160,6 +49201,8 @@ var MeshStandardMaterialParallax_1 = require("../ui/MeshStandardMaterialParallax
 
 var MathUtils_1 = require("../utils/MathUtils");
 
+var AudioTracks_1 = require("./AudioTracks");
+
 gsap_1.gsap.registerPlugin(InertiaPlugin_1.InertiaPlugin, Draggable_1.Draggable); //For webgl1 browsers:
 
 three_1.MathUtils.floorPowerOfTwo = function (value) {
@@ -49228,6 +49271,7 @@ var MaskRevealView = /*#__PURE__*/function () {
     this.cameraLookAtPosition = new THREE.Object3D();
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
+    this.audio = document.getElementById("audio");
 
     this.modelsLoadedCheck = function () {
       var _a;
@@ -49245,7 +49289,7 @@ var MaskRevealView = /*#__PURE__*/function () {
 
         _this.enterBook();
 
-        (_a = document.getElementById('loading')) === null || _a === void 0 ? void 0 : _a.classList.add('hidden');
+        (_a = document.getElementById("loading")) === null || _a === void 0 ? void 0 : _a.classList.add("hidden");
       }
     };
 
@@ -49429,7 +49473,31 @@ var MaskRevealView = /*#__PURE__*/function () {
       }
     };
 
-    this.dragUpdate = function () {
+    this.pauseAudio = function () {
+      if (_this.audio !== null) {
+        _this.audio.pause();
+      }
+    };
+
+    this.playAudio = function () {
+      if (_this.audio !== null) {
+        _this.audio.play();
+      }
+    };
+
+    this.changeAudioSrcByIndex = function (index) {
+      if (_this.audio !== null) {
+        if (Object.keys(AudioTracks_1.audioTracks).includes(index.toString())) {
+          _this.audio.src = AudioTracks_1.audioTracks[index];
+        } else {
+          _this.audio.src = "";
+        }
+      }
+    };
+
+    this.dragEnd = function () {};
+
+    this.updateProgress = function () {
       var page = _this.draggable.x / _this.dim.width * -1;
 
       if (page > _this.pages.length + 0.5) {
@@ -49446,12 +49514,34 @@ var MaskRevealView = /*#__PURE__*/function () {
       }
     };
 
+    this.dragUpdate = function () {
+      _this.updateProgress();
+    };
+
+    this.throwUpdate = function () {
+      _this.updateProgress();
+    };
+
+    this.throwComplete = function () {
+      _this.changeAudioSrcByIndex(_this.currPageIndex);
+
+      _this.playAudio();
+    };
+
     this.setCurrentPage = function (index) {
       if (index > _this.pages.length) {
         _this.showShare();
       } else {
         _this.hideShare();
       }
+
+      _this.pauseAudio();
+
+      setTimeout(function () {
+        _this.changeAudioSrcByIndex(index);
+
+        _this.playAudio();
+      }, 500);
 
       if (index < 0) {
         index = 0;
@@ -49599,6 +49689,14 @@ var MaskRevealView = /*#__PURE__*/function () {
     this._parent = parent;
     this.setupScene();
     this.setupDraggable();
+
+    if (this.audio !== null) {
+      this.audio.addEventListener("ended", function () {
+        _this.pauseAudio();
+
+        _this.setCurrentPage(_this.currPageIndex + 1);
+      });
+    }
   }
 
   _createClass(MaskRevealView, [{
@@ -49615,6 +49713,8 @@ var MaskRevealView = /*#__PURE__*/function () {
         bounds: this._parent,
         inertia: true,
         onDragStart: function onDragStart() {
+          _this2.pauseAudio();
+
           gsap_1.gsap.killTweensOf(_this2.flipTimeline);
         },
         onClick: function onClick(e) {
@@ -49627,7 +49727,9 @@ var MaskRevealView = /*#__PURE__*/function () {
           }
         },
         onDrag: this.dragUpdate,
-        onThrowUpdate: this.dragUpdate,
+        onDragEnd: this.dragEnd,
+        onThrowUpdate: this.throwUpdate,
+        onThrowComplete: this.throwComplete,
         allowNativeTouchScrolling: Boolean(window.Main.I_OS),
         // allowEventDefault: true,
         snap: function snap(value) {
@@ -50010,7 +50112,7 @@ var MaskRevealView = /*#__PURE__*/function () {
 }();
 
 exports.MaskRevealView = MaskRevealView;
-},{"gsap":"../node_modules/gsap/index.js","gsap/Draggable":"../node_modules/gsap/Draggable.js","gsap/InertiaPlugin":"../node_modules/gsap/InertiaPlugin.js","three":"../node_modules/three/build/three.module.js","three/examples/jsm/loaders/GLTFLoader.js":"../node_modules/three/examples/jsm/loaders/GLTFLoader.js","../assets/models/bump.jpg":"assets/models/bump.jpg","../assets/models/cover_blu.glb":"assets/models/cover_blu.glb","../assets/models/pages_uv_remap.glb":"assets/models/pages_uv_remap.glb","../assets/models/normal.jpg":"assets/models/normal.jpg","../assets/models/roughness_2.jpg":"assets/models/roughness_2.jpg","../ui/MeshStandardMaterialParallax":"ui/MeshStandardMaterialParallax.ts","../utils/MathUtils":"utils/MathUtils.ts"}],"index.ts":[function(require,module,exports) {
+},{"gsap":"../node_modules/gsap/index.js","gsap/Draggable":"../node_modules/gsap/Draggable.js","gsap/InertiaPlugin":"../node_modules/gsap/InertiaPlugin.js","three":"../node_modules/three/build/three.module.js","three/examples/jsm/loaders/GLTFLoader.js":"../node_modules/three/examples/jsm/loaders/GLTFLoader.js","../assets/models/bump.jpg":"assets/models/bump.jpg","../assets/models/cover_blu.glb":"assets/models/cover_blu.glb","../assets/models/pages_uv_remap.glb":"assets/models/pages_uv_remap.glb","../assets/models/normal.jpg":"assets/models/normal.jpg","../assets/models/roughness_2.jpg":"assets/models/roughness_2.jpg","../ui/MeshStandardMaterialParallax":"ui/MeshStandardMaterialParallax.ts","../utils/MathUtils":"utils/MathUtils.ts","./AudioTracks":"ui/AudioTracks.ts"}],"index.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -50143,7 +50245,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62534" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49851" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
