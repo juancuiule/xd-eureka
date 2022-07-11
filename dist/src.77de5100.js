@@ -49075,16 +49075,52 @@ var MeshStandardMaterialParallax = /*#__PURE__*/function (_three_1$MeshStandard)
 }(three_1.MeshStandardMaterial);
 
 exports.MeshStandardMaterialParallax = MeshStandardMaterialParallax;
-},{"three":"../node_modules/three/build/three.module.js","../utils/MathUtils":"utils/MathUtils.ts"}],"assets/audios/track1.mp3":[function(require,module,exports) {
-module.exports = "/track1.84a5e36b.mp3";
-},{}],"assets/audios/track2.mp3":[function(require,module,exports) {
-module.exports = "/track2.1f3fe63b.mp3";
-},{}],"assets/audios/track3.mp3":[function(require,module,exports) {
-module.exports = "/track3.c6fa889d.mp3";
-},{}],"assets/audios/track4.mp3":[function(require,module,exports) {
-module.exports = "/track4.39740b78.mp3";
-},{}],"assets/audios/track5.mp3":[function(require,module,exports) {
-module.exports = "/track5.ec395499.mp3";
+},{"three":"../node_modules/three/build/three.module.js","../utils/MathUtils":"utils/MathUtils.ts"}],"assets/audios/track-3.mp3":[function(require,module,exports) {
+module.exports = "/track-3.175e62c9.mp3";
+},{}],"assets/audios/track-4.mp3":[function(require,module,exports) {
+module.exports = "/track-4.cbb04841.mp3";
+},{}],"assets/audios/track-5.mp3":[function(require,module,exports) {
+module.exports = "/track-5.895c1e8f.mp3";
+},{}],"assets/audios/track-6.mp3":[function(require,module,exports) {
+module.exports = "/track-6.a8abbb9e.mp3";
+},{}],"assets/audios/track-7.mp3":[function(require,module,exports) {
+module.exports = "/track-7.e15d308a.mp3";
+},{}],"assets/audios/track-8.mp3":[function(require,module,exports) {
+module.exports = "/track-8.4bbb938e.mp3";
+},{}],"assets/audios/track-9.mp3":[function(require,module,exports) {
+module.exports = "/track-9.0d5120a8.mp3";
+},{}],"assets/audios/track-10.mp3":[function(require,module,exports) {
+module.exports = "/track-10.b27e8d28.mp3";
+},{}],"assets/audios/track-11.mp3":[function(require,module,exports) {
+module.exports = "/track-11.da19596f.mp3";
+},{}],"assets/audios/track-12.mp3":[function(require,module,exports) {
+module.exports = "/track-12.64436708.mp3";
+},{}],"assets/audios/track-13.mp3":[function(require,module,exports) {
+module.exports = "/track-13.810083ed.mp3";
+},{}],"assets/audios/track-14.mp3":[function(require,module,exports) {
+module.exports = "/track-14.83a74474.mp3";
+},{}],"assets/audios/track-15.mp3":[function(require,module,exports) {
+module.exports = "/track-15.c8ba5fbc.mp3";
+},{}],"assets/audios/track-16.mp3":[function(require,module,exports) {
+module.exports = "/track-16.f6291c70.mp3";
+},{}],"assets/audios/track-17.mp3":[function(require,module,exports) {
+module.exports = "/track-17.a5a05d11.mp3";
+},{}],"assets/audios/track-18.mp3":[function(require,module,exports) {
+module.exports = "/track-18.99b86920.mp3";
+},{}],"assets/audios/track-19.mp3":[function(require,module,exports) {
+module.exports = "/track-19.65a653af.mp3";
+},{}],"assets/audios/track-20.mp3":[function(require,module,exports) {
+module.exports = "/track-20.415f7f81.mp3";
+},{}],"assets/audios/track-21.mp3":[function(require,module,exports) {
+module.exports = "/track-21.e9c82eef.mp3";
+},{}],"assets/audios/track-22.mp3":[function(require,module,exports) {
+module.exports = "/track-22.df59a616.mp3";
+},{}],"assets/audios/track-23.mp3":[function(require,module,exports) {
+module.exports = "/track-23.88e57ec8.mp3";
+},{}],"assets/audios/track-24.mp3":[function(require,module,exports) {
+module.exports = "/track-24.7dafd9b0.mp3";
+},{}],"assets/audios/track-25.mp3":[function(require,module,exports) {
+module.exports = "/track-25.1900768e.mp3";
 },{}],"ui/AudioTracks.ts":[function(require,module,exports) {
 "use strict";
 
@@ -49099,24 +49135,60 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.audioTracks = void 0;
 
-var track1_mp3_1 = __importDefault(require("../assets/audios/track1.mp3"));
+var track_3_mp3_1 = __importDefault(require("../assets/audios/track-3.mp3"));
 
-var track2_mp3_1 = __importDefault(require("../assets/audios/track2.mp3"));
+var track_4_mp3_1 = __importDefault(require("../assets/audios/track-4.mp3"));
 
-var track3_mp3_1 = __importDefault(require("../assets/audios/track3.mp3"));
+var track_5_mp3_1 = __importDefault(require("../assets/audios/track-5.mp3"));
 
-var track4_mp3_1 = __importDefault(require("../assets/audios/track4.mp3"));
+var track_6_mp3_1 = __importDefault(require("../assets/audios/track-6.mp3"));
 
-var track5_mp3_1 = __importDefault(require("../assets/audios/track5.mp3"));
+var track_7_mp3_1 = __importDefault(require("../assets/audios/track-7.mp3"));
 
-exports.audioTracks = {
-  4: track1_mp3_1.default,
-  5: track2_mp3_1.default,
-  6: track3_mp3_1.default,
-  7: track4_mp3_1.default,
-  8: track5_mp3_1.default
-};
-},{"../assets/audios/track1.mp3":"assets/audios/track1.mp3","../assets/audios/track2.mp3":"assets/audios/track2.mp3","../assets/audios/track3.mp3":"assets/audios/track3.mp3","../assets/audios/track4.mp3":"assets/audios/track4.mp3","../assets/audios/track5.mp3":"assets/audios/track5.mp3"}],"ui/ThreeView.ts":[function(require,module,exports) {
+var track_8_mp3_1 = __importDefault(require("../assets/audios/track-8.mp3"));
+
+var track_9_mp3_1 = __importDefault(require("../assets/audios/track-9.mp3"));
+
+var track_10_mp3_1 = __importDefault(require("../assets/audios/track-10.mp3"));
+
+var track_11_mp3_1 = __importDefault(require("../assets/audios/track-11.mp3"));
+
+var track_12_mp3_1 = __importDefault(require("../assets/audios/track-12.mp3"));
+
+var track_13_mp3_1 = __importDefault(require("../assets/audios/track-13.mp3"));
+
+var track_14_mp3_1 = __importDefault(require("../assets/audios/track-14.mp3"));
+
+var track_15_mp3_1 = __importDefault(require("../assets/audios/track-15.mp3"));
+
+var track_16_mp3_1 = __importDefault(require("../assets/audios/track-16.mp3"));
+
+var track_17_mp3_1 = __importDefault(require("../assets/audios/track-17.mp3"));
+
+var track_18_mp3_1 = __importDefault(require("../assets/audios/track-18.mp3"));
+
+var track_19_mp3_1 = __importDefault(require("../assets/audios/track-19.mp3"));
+
+var track_20_mp3_1 = __importDefault(require("../assets/audios/track-20.mp3"));
+
+var track_21_mp3_1 = __importDefault(require("../assets/audios/track-21.mp3"));
+
+var track_22_mp3_1 = __importDefault(require("../assets/audios/track-22.mp3"));
+
+var track_23_mp3_1 = __importDefault(require("../assets/audios/track-23.mp3"));
+
+var track_24_mp3_1 = __importDefault(require("../assets/audios/track-24.mp3"));
+
+var track_25_mp3_1 = __importDefault(require("../assets/audios/track-25.mp3"));
+
+var tracks = [track_3_mp3_1.default, track_4_mp3_1.default, track_5_mp3_1.default, track_6_mp3_1.default, track_7_mp3_1.default, track_8_mp3_1.default, track_9_mp3_1.default, track_10_mp3_1.default, track_11_mp3_1.default, track_12_mp3_1.default, track_13_mp3_1.default, track_14_mp3_1.default, track_15_mp3_1.default, track_16_mp3_1.default, track_17_mp3_1.default, track_18_mp3_1.default, track_19_mp3_1.default, track_20_mp3_1.default, track_21_mp3_1.default, track_22_mp3_1.default, track_23_mp3_1.default, track_24_mp3_1.default, track_25_mp3_1.default // track26,
+];
+var tuples = tracks.map(function (track, i) {
+  return [i + 3, track];
+});
+exports.audioTracks = Object.fromEntries(tuples);
+console.log(exports.audioTracks);
+},{"../assets/audios/track-3.mp3":"assets/audios/track-3.mp3","../assets/audios/track-4.mp3":"assets/audios/track-4.mp3","../assets/audios/track-5.mp3":"assets/audios/track-5.mp3","../assets/audios/track-6.mp3":"assets/audios/track-6.mp3","../assets/audios/track-7.mp3":"assets/audios/track-7.mp3","../assets/audios/track-8.mp3":"assets/audios/track-8.mp3","../assets/audios/track-9.mp3":"assets/audios/track-9.mp3","../assets/audios/track-10.mp3":"assets/audios/track-10.mp3","../assets/audios/track-11.mp3":"assets/audios/track-11.mp3","../assets/audios/track-12.mp3":"assets/audios/track-12.mp3","../assets/audios/track-13.mp3":"assets/audios/track-13.mp3","../assets/audios/track-14.mp3":"assets/audios/track-14.mp3","../assets/audios/track-15.mp3":"assets/audios/track-15.mp3","../assets/audios/track-16.mp3":"assets/audios/track-16.mp3","../assets/audios/track-17.mp3":"assets/audios/track-17.mp3","../assets/audios/track-18.mp3":"assets/audios/track-18.mp3","../assets/audios/track-19.mp3":"assets/audios/track-19.mp3","../assets/audios/track-20.mp3":"assets/audios/track-20.mp3","../assets/audios/track-21.mp3":"assets/audios/track-21.mp3","../assets/audios/track-22.mp3":"assets/audios/track-22.mp3","../assets/audios/track-23.mp3":"assets/audios/track-23.mp3","../assets/audios/track-24.mp3":"assets/audios/track-24.mp3","../assets/audios/track-25.mp3":"assets/audios/track-25.mp3"}],"ui/ThreeView.ts":[function(require,module,exports) {
 "use strict";
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -50245,7 +50317,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49851" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59381" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
