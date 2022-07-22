@@ -54,5 +54,3 @@ const tuples = tracks.map((track, i) => {
 });
 
 export const audioTracks = Object.fromEntries(tuples);
-
-console.log(audioTracks);

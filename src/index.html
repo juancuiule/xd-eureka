@@ -291,96 +291,6 @@
         opacity: 0;
       }
 
-      /* .loading {
-        display: inline-block;
-        position: relative;
-        width: 80px;
-        height: 80px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-      .loading div {
-        position: absolute;
-        width: 6px;
-        height: 6px;
-        background: #fff;
-        border-radius: 50%;
-        animation: loading 1.2s linear infinite;
-      }
-      .loading div:nth-child(1) {
-        animation-delay: 0s;
-        top: 37px;
-        left: 66px;
-      }
-      .loading div:nth-child(2) {
-        animation-delay: -0.1s;
-        top: 22px;
-        left: 62px;
-      }
-      .loading div:nth-child(3) {
-        animation-delay: -0.2s;
-        top: 11px;
-        left: 52px;
-      }
-      .loading div:nth-child(4) {
-        animation-delay: -0.3s;
-        top: 7px;
-        left: 37px;
-      }
-      .loading div:nth-child(5) {
-        animation-delay: -0.4s;
-        top: 11px;
-        left: 22px;
-      }
-      .loading div:nth-child(6) {
-        animation-delay: -0.5s;
-        top: 22px;
-        left: 11px;
-      }
-      .loading div:nth-child(7) {
-        animation-delay: -0.6s;
-        top: 37px;
-        left: 7px;
-      }
-      .loading div:nth-child(8) {
-        animation-delay: -0.7s;
-        top: 52px;
-        left: 11px;
-      }
-      .loading div:nth-child(9) {
-        animation-delay: -0.8s;
-        top: 62px;
-        left: 22px;
-      }
-      .loading div:nth-child(10) {
-        animation-delay: -0.9s;
-        top: 66px;
-        left: 37px;
-      }
-      .loading div:nth-child(11) {
-        animation-delay: -1s;
-        top: 62px;
-        left: 52px;
-      }
-      .loading div:nth-child(12) {
-        animation-delay: -1.1s;
-        top: 52px;
-        left: 62px;
-      }
-      @keyframes loading {
-        0%,
-        20%,
-        80%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.5);
-        }
-      } */
-
       .loading {
         display: inline-block;
         border-top-left-radius: 60px;
@@ -397,8 +307,6 @@
         left: 50%;
         top: 50%;
         transform: translate(calc(-50% - 30px), calc(-50% - 30px));
-        /* 
-        transform: translate(-50%, -50%); */
       }
 
       @keyframes rotate {
@@ -409,6 +317,38 @@
         100% {
           transform: translate(calc(-50% - 30px), calc(-50% - 30px))
             rotate(360deg);
+        }
+      }
+
+      .player {
+        width: 94px;
+        height: 94px;
+        border-radius: 100%;
+        background: #14273c;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .player .track {
+        stroke: #69bae7;
+        stroke-width: 3px;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        transform-origin: center;
+        transform: rotate(-90deg);
+      }
+
+      @keyframes dash {
+        from {
+          stroke-dashoffset: 100;
+        }
+        to {
+          stroke-dashoffset: 0;
         }
       }
     </style>
@@ -433,7 +373,7 @@
 
     <div id="copy-banner">Copiado</div>
 
-    <div class="loading" id="loading">
+    <!-- <div class="loading" id="loading">
       <div></div>
       <div></div>
       <div></div>
@@ -446,7 +386,7 @@
       <div></div>
       <div></div>
       <div></div>
-    </div>
+    </div> -->
 
     <div id="canvasContainer">
       <div class="draggable">
@@ -481,8 +421,59 @@
         </div>
       </div>
     </div>
-    <audio id="audio" src="./assets/audios/track1.mp3" controls></audio>
 
+    <div class="player" id="player">
+      <svg>
+        <circle
+          class="track"
+          id="track"
+          cx="50%"
+          cy="50%"
+          r="40"
+          fill="none"
+          stroke="white"
+          pathLength="100"
+        />
+      </svg>
+    </div>
+    <audio id="audio" src="" controls></audio>
     <script src="./index.ts"></script>
+    <script>
+      const audio = document.getElementById("audio");
+      const player = document.getElementById("player");
+      const track = document.getElementById("track");
+
+      let duration = 0;
+
+      // player.addEventListener("click", () => {
+      //   if (audio.paused) {
+      //     audio.play();
+      //     track.style.animationPlayState = "running";
+      //   } else {
+      //     audio.pause();
+      //     track.style.animationPlayState = "paused";
+      //   }
+      // });
+
+      audio.addEventListener("play", () => {
+        track.style.animation = "none";
+      });
+
+      audio.addEventListener("loadedmetadata", () => {
+        duration = Math.ceil(audio.duration);
+        console.log(`Next duration = ${duration}s`);
+      });
+
+      audio.addEventListener("durationchange", () => {
+        console.log("Duration changed");
+        duration = Math.ceil(audio.duration);
+
+        track.style.stroke = "#69bae7";
+        track.style.animationName = "dash";
+        track.style.animationDuration = `${duration}s`;
+        track.style.animationIterationCount = "infinite";
+        track.style.animationTimingFunction = "linear";
+      });
+    </script>
   </body>
 </html>
