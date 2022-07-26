@@ -851,6 +851,21 @@ export class MaskRevealView {
   };
 
   private setupNav() {
+    const prevButton = document.getElementById("prev");
+    const nextButton = document.getElementById("next");
+
+    if (prevButton !== null) {
+      prevButton.addEventListener("click", () => {
+        this.setCurrentPage(this.currPageIndex - 1);
+      });
+    }
+
+    if (nextButton !== null) {
+      nextButton.addEventListener("click", () => {
+        this.setCurrentPage(this.currPageIndex + 1);
+      });
+    }
+
     document.addEventListener("keydown", (event: KeyboardEvent) => {
       if (this.ENTERED) {
         if (event.key === "ArrowRight") {

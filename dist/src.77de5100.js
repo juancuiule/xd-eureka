@@ -50167,6 +50167,21 @@ var MaskRevealView = /*#__PURE__*/function () {
     value: function setupNav() {
       var _this7 = this;
 
+      var prevButton = document.getElementById("prev");
+      var nextButton = document.getElementById("next");
+
+      if (prevButton !== null) {
+        prevButton.addEventListener("click", function () {
+          _this7.setCurrentPage(_this7.currPageIndex - 1);
+        });
+      }
+
+      if (nextButton !== null) {
+        nextButton.addEventListener("click", function () {
+          _this7.setCurrentPage(_this7.currPageIndex + 1);
+        });
+      }
+
       document.addEventListener("keydown", function (event) {
         if (_this7.ENTERED) {
           if (event.key === "ArrowRight") {

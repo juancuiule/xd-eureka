@@ -321,21 +321,44 @@
         }
       }
 
-      .player {
-        width: 94px;
-        height: 94px;
+      button.action-button {
         border-radius: 100%;
         background: #14273c;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 80px;
         display: flex;
         justify-content: center;
         align-items: center;
+        box-shadow: none;
+        border: none;
+        cursor: pointer;
+        padding: 0px;
+        position: absolute;
       }
 
-      .player .track {
+      .prev,
+      .next {
+        transform: translateY(-50%);
+        top: 50%;
+        width: 68px;
+        height: 68px;
+      }
+
+      .prev {
+        left: 80px;
+      }
+
+      .next {
+        right: 80px;
+      }
+
+      .audio-control {
+        width: 94px;
+        height: 94px;
+        transform: translateX(-50%);
+        left: 50%;
+        bottom: 80px;
+      }
+
+      .audio-control .track {
         stroke: #69bae7;
         stroke-width: 3px;
         stroke-dasharray: 100;
@@ -343,10 +366,17 @@
         transform-origin: center;
         transform: rotate(-90deg);
       }
+
+      #audio {
+        display: none;
+      }
     </style>
   </head>
 
   <body>
+    <button class="action-button prev" id="prev"></button>
+    <button class="action-button next" id="next"></button>
+
     <nav>
       <div class="nav-left">
         <a href="https://guau.ar/eureka">
@@ -414,7 +444,7 @@
       </div>
     </div>
 
-    <div class="player" id="player">
+    <button class="audio-control action-button" id="audio-control">
       <svg>
         <circle
           class="track"
@@ -427,20 +457,21 @@
           pathLength="100"
         />
       </svg>
-    </div>
+    </button>
+
     <audio id="audio" src="" controls></audio>
+
     <script src="./index.ts"></script>
     <script>
       const audio = document.getElementById("audio");
-      const player = document.getElementById("player");
+      const audioControl = document.getElementById("audio-control");
       const track = document.getElementById("track");
 
       let animationFrame = null;
       let firstTime = true;
 
       const whilePlaying = () => {
-        const currentTime = audio.currentTime;
-        const trackStart = (currentTime / audio.duration) * 100;
+        const trackStart = (audio.currentTime / audio.duration) * 100;
         track.style.strokeDashoffset = 100 - trackStart;
         animationFrame = requestAnimationFrame(whilePlaying);
       };
@@ -453,7 +484,7 @@
         cancelAnimationFrame(animationFrame);
       };
 
-      player.addEventListener("click", () => {
+      audioControl.addEventListener("click", () => {
         if (audio.paused) {
           audio.play();
           startAnimation();
@@ -464,7 +495,6 @@
       });
 
       audio.addEventListener("play", () => {
-        console.log("play");
         if (firstTime) {
           firstTime = false;
           startAnimation();
