@@ -133,6 +133,7 @@
         bottom: 0;
         overflow: hidden;
         height: 100vh;
+        pointer-events: none;
       }
 
       .extra {
@@ -342,15 +343,6 @@
         transform-origin: center;
         transform: rotate(-90deg);
       }
-
-      @keyframes dash {
-        from {
-          stroke-dashoffset: 100;
-        }
-        to {
-          stroke-dashoffset: 0;
-        }
-      }
     </style>
   </head>
 
@@ -443,36 +435,44 @@
       const player = document.getElementById("player");
       const track = document.getElementById("track");
 
-      let duration = 0;
+      let animationFrame = null;
+      let firstTime = true;
 
-      // player.addEventListener("click", () => {
-      //   if (audio.paused) {
-      //     audio.play();
-      //     track.style.animationPlayState = "running";
-      //   } else {
-      //     audio.pause();
-      //     track.style.animationPlayState = "paused";
-      //   }
-      // });
+      const whilePlaying = () => {
+        const currentTime = audio.currentTime;
+        const trackStart = (currentTime / audio.duration) * 100;
+        track.style.strokeDashoffset = 100 - trackStart;
+        animationFrame = requestAnimationFrame(whilePlaying);
+      };
 
-      audio.addEventListener("play", () => {
-        track.style.animation = "none";
+      const startAnimation = () => {
+        requestAnimationFrame(whilePlaying);
+      };
+
+      const endAnimation = () => {
+        cancelAnimationFrame(animationFrame);
+      };
+
+      player.addEventListener("click", () => {
+        if (audio.paused) {
+          audio.play();
+          startAnimation();
+        } else {
+          audio.pause();
+          endAnimation();
+        }
       });
 
-      audio.addEventListener("loadedmetadata", () => {
-        duration = Math.ceil(audio.duration);
-        console.log(`Next duration = ${duration}s`);
+      audio.addEventListener("play", () => {
+        console.log("play");
+        if (firstTime) {
+          firstTime = false;
+          startAnimation();
+        }
       });
 
       audio.addEventListener("durationchange", () => {
-        console.log("Duration changed");
-        duration = Math.ceil(audio.duration);
-
-        track.style.stroke = "#69bae7";
-        track.style.animationName = "dash";
-        track.style.animationDuration = `${duration}s`;
-        track.style.animationIterationCount = "infinite";
-        track.style.animationTimingFunction = "linear";
+        track.style.strokeDashoffset = 100;
       });
     </script>
   </body>

@@ -49286,7 +49286,7 @@ three_1.MathUtils.floorPowerOfTwo = function (value) {
 };
 
 var pages = Array.from({
-  length: 27
+  length: 10
 }).map(function (_, i) {
   return {
     frames: [{
@@ -50316,7 +50316,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65513" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58298" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

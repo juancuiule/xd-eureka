@@ -51,7 +51,7 @@ MathUtils.floorPowerOfTwo = (value) => {
   return MathUtils.ceilPowerOfTwo(value);
 };
 
-const pages = Array.from({ length: 27 }).map((_, i) => {
+const pages = Array.from({ length: 10 }).map((_, i) => {
   return {
     frames: [
       {
