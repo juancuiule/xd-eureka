@@ -49286,7 +49286,7 @@ three_1.MathUtils.floorPowerOfTwo = function (value) {
 };
 
 var pages = Array.from({
-  length: 10
+  length: 27
 }).map(function (_, i) {
   return {
     frames: [{
