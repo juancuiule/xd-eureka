@@ -49319,10 +49319,6 @@ var MaskRevealView = /*#__PURE__*/function () {
 
     _classCallCheck(this, MaskRevealView);
 
-    this.ambientMove = {
-      x: 0,
-      y: 0
-    };
     this.dim = new three_1.Vector2();
     this._isActive = false;
     this.pageMaterials = [];
@@ -49599,7 +49595,75 @@ var MaskRevealView = /*#__PURE__*/function () {
       _this.playAudio();
     };
 
+    this.hideNext = function () {
+      var nextButton = document.getElementById("next");
+
+      if (nextButton !== null) {
+        nextButton.style.transform = "translateY(-50%) translateX(160px)";
+      }
+    };
+
+    this.showNext = function () {
+      var nextButton = document.getElementById("next");
+
+      if (nextButton !== null) {
+        nextButton.style.transform = "translateY(-50%)";
+      }
+    };
+
+    this.hidePrev = function () {
+      var prevButton = document.getElementById("prev");
+
+      if (prevButton !== null) {
+        prevButton.style.transform = "translateY(-50%) translateX(-160px)";
+      }
+    };
+
+    this.showPrev = function () {
+      var prevButton = document.getElementById("prev");
+
+      if (prevButton !== null) {
+        prevButton.style.transform = "translateY(-50%)";
+      }
+    };
+
+    this.hideAudioControl = function () {
+      var audioControl = document.getElementById("audio-control");
+
+      if (audioControl !== null) {
+        audioControl.style.transform = "translateX(-50%) translateY(calc(80px + 94px + 20px))";
+      }
+    };
+
+    this.showAudioControl = function () {
+      var audioControl = document.getElementById("audio-control");
+
+      if (audioControl !== null) {
+        audioControl.style.transform = "translateX(-50%)";
+      }
+    };
+
+    this.checkNavButtonsDisplay = function (index) {
+      if (index > _this.pages.length) {
+        _this.hideNext();
+      } else if (index === 0) {
+        _this.hidePrev();
+      } else {
+        _this.showNext();
+
+        _this.showPrev();
+      }
+    };
+
     this.setCurrentPage = function (index) {
+      _this.checkNavButtonsDisplay(index);
+
+      if (index >= 3) {
+        _this.showAudioControl();
+      } else {
+        _this.hideAudioControl();
+      }
+
       if (index > _this.pages.length) {
         _this.showShare();
       } else {
@@ -49658,6 +49722,9 @@ var MaskRevealView = /*#__PURE__*/function () {
       var timeline = gsap_1.gsap.timeline({
         onComplete: function onComplete(args) {
           _this.currPageIndex = 2;
+
+          _this.checkNavButtonsDisplay(_this.currPageIndex);
+
           gsap_1.gsap.set(_this.draggableElement, {
             left: _this.currPageIndex * -_this.dim.width
           });
@@ -49857,46 +49924,10 @@ var MaskRevealView = /*#__PURE__*/function () {
       this.spotLight.intensity = 0.12;
       this.spotLight.position.set(0, 0, 25);
       this.scene.add(this.spotLight);
-      this.scene.add(this.dirLight); // let bgTex = new THREE.TextureLoader().load(BgMap);
-      // bgTex.wrapT = THREE.RepeatWrapping;
-      // bgTex.wrapS = THREE.RepeatWrapping;
-      // bgTex.repeat.x = 3 * 10;
-      // bgTex.repeat.y = 3 * 10;
-      // this.groundPlane = new THREE.Mesh(
-      //   new THREE.PlaneBufferGeometry(6 * 10, 6 * 10),
-      //   new THREE.MeshStandardMaterial({
-      //     color: 0xffffff,
-      //     map: bgTex,
-      //     roughness: 0.7,
-      //     metalness: 1,
-      //   })
-      // );
-      // this.groundPlane.position.y = 16;
-      // this.groundPlane.name = "groundPlane";
-      // this.scene.add(this.groundPlane);
-
+      this.scene.add(this.dirLight);
       this.cameraLookAtPosition.name = "cameraLookAtPosition";
       this.scene.add(this.cameraLookAtPosition);
       this.loadModel();
-      var speed = 8;
-      gsap_1.gsap.fromTo(this.ambientMove, {
-        y: -0.03
-      }, {
-        y: 0.03,
-        ease: "sine.inOut",
-        duration: 7.5 * speed,
-        repeat: -1,
-        yoyo: true
-      });
-      gsap_1.gsap.fromTo(this.ambientMove, {
-        x: 0.04
-      }, {
-        x: -0.04,
-        ease: "sine.inOut",
-        duration: 3.75 * speed,
-        repeat: -1,
-        yoyo: true
-      });
     }
   }, {
     key: "loadModel",

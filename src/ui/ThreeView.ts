@@ -87,13 +87,10 @@ export class MaskRevealView {
   private scene: Scene;
 
   private controls: OrbitControls;
-  private groundPlane: THREE.Mesh<THREE.PlaneBufferGeometry, THREE.Material>;
   private ambLight: AmbientLight;
 
   private dirLight: DirectionalLight;
   private spotLight: SpotLight;
-
-  private ambientMove = { x: 0, y: 0 };
 
   private dim = new Vector2();
   private _isActive: boolean = false;
@@ -257,51 +254,10 @@ export class MaskRevealView {
     this.scene.add(this.spotLight);
     this.scene.add(this.dirLight);
 
-    // let bgTex = new THREE.TextureLoader().load(BgMap);
-    // bgTex.wrapT = THREE.RepeatWrapping;
-    // bgTex.wrapS = THREE.RepeatWrapping;
-    // bgTex.repeat.x = 3 * 10;
-    // bgTex.repeat.y = 3 * 10;
-    // this.groundPlane = new THREE.Mesh(
-    //   new THREE.PlaneBufferGeometry(6 * 10, 6 * 10),
-    //   new THREE.MeshStandardMaterial({
-    //     color: 0xffffff,
-    //     map: bgTex,
-    //     roughness: 0.7,
-    //     metalness: 1,
-    //   })
-    // );
-    // this.groundPlane.position.y = 16;
-    // this.groundPlane.name = "groundPlane";
-    // this.scene.add(this.groundPlane);
     this.cameraLookAtPosition.name = "cameraLookAtPosition";
     this.scene.add(this.cameraLookAtPosition);
 
     this.loadModel();
-
-    let speed = 8;
-    gsap.fromTo(
-      this.ambientMove,
-      { y: -0.03 },
-      {
-        y: 0.03,
-        ease: "sine.inOut",
-        duration: 7.5 * speed,
-        repeat: -1,
-        yoyo: true,
-      }
-    );
-    gsap.fromTo(
-      this.ambientMove,
-      { x: 0.04 },
-      {
-        x: -0.04,
-        ease: "sine.inOut",
-        duration: 3.75 * speed,
-        repeat: -1,
-        yoyo: true,
-      }
-    );
   }
 
   private loadModel() {
@@ -809,7 +765,69 @@ export class MaskRevealView {
     this.playAudio();
   };
 
+  private hideNext = () => {
+    const nextButton = document.getElementById("next");
+    if (nextButton !== null) {
+      nextButton.style.transform = "translateY(-50%) translateX(160px)";
+    }
+  };
+
+  private showNext = () => {
+    const nextButton = document.getElementById("next");
+    if (nextButton !== null) {
+      nextButton.style.transform = "translateY(-50%)";
+    }
+  };
+
+  private hidePrev = () => {
+    const prevButton = document.getElementById("prev");
+    if (prevButton !== null) {
+      prevButton.style.transform = "translateY(-50%) translateX(-160px)";
+    }
+  };
+
+  private showPrev = () => {
+    const prevButton = document.getElementById("prev");
+    if (prevButton !== null) {
+      prevButton.style.transform = "translateY(-50%)";
+    }
+  };
+
+  private hideAudioControl = () => {
+    const audioControl = document.getElementById("audio-control");
+    if (audioControl !== null) {
+      audioControl.style.transform =
+        "translateX(-50%) translateY(calc(80px + 94px + 20px))";
+    }
+  };
+
+  private showAudioControl = () => {
+    const audioControl = document.getElementById("audio-control");
+    if (audioControl !== null) {
+      audioControl.style.transform = "translateX(-50%)";
+    }
+  };
+
+  private checkNavButtonsDisplay = (index: number) => {
+    if (index > this.pages.length) {
+      this.hideNext();
+    } else if (index === 0) {
+      this.hidePrev();
+    } else {
+      this.showNext();
+      this.showPrev();
+    }
+  };
+
   private setCurrentPage = (index: number) => {
+    this.checkNavButtonsDisplay(index);
+
+    if (index >= 3) {
+      this.showAudioControl();
+    } else {
+      this.hideAudioControl();
+    }
+
     if (index > this.pages.length) {
       this.showShare();
     } else {
@@ -883,6 +901,7 @@ export class MaskRevealView {
     let timeline = gsap.timeline({
       onComplete: (args) => {
         this.currPageIndex = 2;
+        this.checkNavButtonsDisplay(this.currPageIndex);
         gsap.set(this.draggableElement, {
           left: this.currPageIndex * -this.dim.width,
         });

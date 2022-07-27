@@ -80,6 +80,7 @@
         margin: 0;
         background-repeat: no-repeat;
         background-attachment: fixed;
+        overflow-x: hidden;
       }
 
       @font-face {
@@ -333,28 +334,30 @@
         padding: 0px;
         position: absolute;
         z-index: 999;
+        transition: transform 0.2s;
       }
 
-      .prev,
-      .next {
-        transform: translateY(-50%);
+      button.prev,
+      button.next {
         top: 50%;
         width: 68px;
         height: 68px;
       }
 
-      .prev {
+      button.prev {
         left: 80px;
+        transform: translateY(-50%) translateX(-160px);
       }
 
-      .next {
+      button.next {
         right: 80px;
+        transform: translateY(-50%) translateX(160px);
       }
 
       .audio-control {
         width: 94px;
         height: 94px;
-        transform: translateX(-50%);
+        transform: translateX(-50%) translateY(calc(80px + 94px + 20px));
         left: 50%;
         bottom: 80px;
       }
@@ -524,6 +527,7 @@
           firstTime = false;
           startAnimation();
         }
+        audioControl.style.transform = `translateX(-50%)`;
         iconPause.style.display = "block";
         iconPlay.style.display = "none";
       });

@@ -69,7 +69,8 @@
     "skipLibCheck": true,                           /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true,        /* Disallow inconsistently-cased references to the same file. */
     "lib": [
-      "ES2019"
+      "ES2019",
+      "DOM"
     ]
   }
 }
