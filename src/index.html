@@ -359,6 +359,12 @@
         bottom: 80px;
       }
 
+      .audio-control svg {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
       .audio-control .track {
         stroke: #69bae7;
         stroke-width: 3px;
@@ -371,12 +377,21 @@
       #audio {
         display: none;
       }
+
+      #icon-play,
+      #icon-pause {
+        display: none;
+      }
     </style>
   </head>
 
   <body>
-    <button class="action-button prev" id="prev"></button>
-    <button class="action-button next" id="next"></button>
+    <button class="action-button prev" id="prev">
+      <img src="./assets/images/icons/chevron-left.svg" alt="chevron-left" />
+    </button>
+    <button class="action-button next" id="next">
+      <img src="./assets/images/icons/chevron-right.svg" alt="chevron-right" />
+    </button>
 
     <nav>
       <div class="nav-left">
@@ -458,6 +473,8 @@
           pathLength="100"
         />
       </svg>
+      <img src="./assets/images/icons/play.svg" id="icon-play" />
+      <img src="./assets/images/icons/pause.svg" id="icon-pause" />
     </button>
 
     <audio id="audio" src="" controls></audio>
@@ -467,6 +484,9 @@
       const audio = document.getElementById("audio");
       const audioControl = document.getElementById("audio-control");
       const track = document.getElementById("track");
+
+      const iconPlay = document.getElementById("icon-play");
+      const iconPause = document.getElementById("icon-pause");
 
       let animationFrame = null;
       let firstTime = true;
@@ -478,10 +498,12 @@
       };
 
       const startAnimation = () => {
+        track.style.stroke = "#69bae7";
         requestAnimationFrame(whilePlaying);
       };
 
       const endAnimation = () => {
+        track.style.stroke = "#ffffff";
         cancelAnimationFrame(animationFrame);
       };
 
@@ -491,6 +513,8 @@
           startAnimation();
         } else {
           audio.pause();
+          iconPause.style.display = "none";
+          iconPlay.style.display = "block";
           endAnimation();
         }
       });
@@ -500,7 +524,14 @@
           firstTime = false;
           startAnimation();
         }
+        iconPause.style.display = "block";
+        iconPlay.style.display = "none";
       });
+
+      // audio.addEventListener("pause", () => {
+      //   iconPause.style.display = "none";
+      //   iconPlay.style.display = "block";
+      // });
 
       audio.addEventListener("durationchange", () => {
         track.style.strokeDashoffset = 100;
