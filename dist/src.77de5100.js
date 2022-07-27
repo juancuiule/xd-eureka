@@ -49555,9 +49555,12 @@ var MaskRevealView = /*#__PURE__*/function () {
     this.changeAudioSrcByIndex = function (index) {
       if (_this.audio !== null) {
         if (Object.keys(AudioTracks_1.audioTracks).includes(index.toString())) {
-          _this.audio.src = AudioTracks_1.audioTracks[index];
+          _this.audio.src = AudioTracks_1.audioTracks[index]; // if (!this.audio.src.includes(audioTracks[index.toString()])) {
+          // }
         } else {
           _this.audio.src = "";
+
+          _this.hideAudioControl();
         }
       }
     };
@@ -49590,9 +49593,13 @@ var MaskRevealView = /*#__PURE__*/function () {
     };
 
     this.throwComplete = function () {
+      var _a;
+
       _this.changeAudioSrcByIndex(_this.currPageIndex);
 
-      _this.playAudio();
+      if (((_a = _this.audio) === null || _a === void 0 ? void 0 : _a.src) !== window.location.href) {
+        _this.playAudio();
+      }
     };
 
     this.hideNext = function () {

@@ -55,6 +55,7 @@ gtag("config", "G-7XN211WD0G");</script>
         background-repeat: no-repeat;
         background-attachment: fixed;
         overflow-x: hidden;
+        overflow-y: hidden;
       }
 
       @font-face {
@@ -441,6 +442,10 @@ var animationFrame = null;
 var firstTime = true;
 
 var whilePlaying = function whilePlaying() {
+  if (audio.paused) {
+    return;
+  }
+
   var trackStart = audio.currentTime / audio.duration * 100;
   track.style.strokeDashoffset = 100 - trackStart;
   animationFrame = requestAnimationFrame(whilePlaying);
@@ -451,36 +456,44 @@ var startAnimation = function startAnimation() {
   requestAnimationFrame(whilePlaying);
 };
 
-var endAnimation = function endAnimation() {
+var pauseAnimation = function pauseAnimation() {
   track.style.stroke = "#ffffff";
   cancelAnimationFrame(animationFrame);
 };
 
+var resetAnimation = function resetAnimation() {
+  track.style.stroke = "#ffffff";
+  track.style.strokeDashoffset = 100;
+};
+
+var userPaused = true;
 audioControl.addEventListener("click", function () {
   if (audio.paused) {
     audio.play();
     startAnimation();
   } else {
     audio.pause();
+    userPaused = true;
     iconPause.style.display = "none";
     iconPlay.style.display = "block";
-    endAnimation();
+    pauseAnimation();
   }
 });
 audio.addEventListener("play", function () {
-  if (firstTime) {
-    firstTime = false;
+  console.log("play ".concat(audio.src));
+
+  if (audio.src !== window.location.href) {
+    audioControl.style.transform = "translateX(-50%)";
     startAnimation();
+  } else {
+    resetAnimation();
+    pauseAnimation();
+    audio.pause();
   }
 
-  audioControl.style.transform = "translateX(-50%)";
   iconPause.style.display = "block";
   iconPlay.style.display = "none";
-}); // audio.addEventListener("pause", () => {
-//   iconPause.style.display = "none";
-//   iconPlay.style.display = "block";
-// });
-
+});
 audio.addEventListener("durationchange", function () {
   track.style.strokeDashoffset = 100;
 });</script>

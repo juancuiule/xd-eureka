@@ -726,8 +726,11 @@ export class MaskRevealView {
     if (this.audio !== null) {
       if (Object.keys(audioTracks).includes(index.toString())) {
         this.audio.src = audioTracks[index];
+        // if (!this.audio.src.includes(audioTracks[index.toString()])) {
+        // }
       } else {
         this.audio.src = "";
+        this.hideAudioControl();
       }
     }
   };
@@ -762,7 +765,9 @@ export class MaskRevealView {
 
   private throwComplete = () => {
     this.changeAudioSrcByIndex(this.currPageIndex);
-    this.playAudio();
+    if (this.audio?.src !== window.location.href) {
+      this.playAudio();
+    }
   };
 
   private hideNext = () => {

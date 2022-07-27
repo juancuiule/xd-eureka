@@ -81,6 +81,7 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         overflow-x: hidden;
+        overflow-y: hidden;
       }
 
       @font-face {
@@ -495,6 +496,9 @@
       let firstTime = true;
 
       const whilePlaying = () => {
+        if (audio.paused) {
+          return;
+        }
         const trackStart = (audio.currentTime / audio.duration) * 100;
         track.style.strokeDashoffset = 100 - trackStart;
         animationFrame = requestAnimationFrame(whilePlaying);
@@ -505,10 +509,17 @@
         requestAnimationFrame(whilePlaying);
       };
 
-      const endAnimation = () => {
+      const pauseAnimation = () => {
         track.style.stroke = "#ffffff";
         cancelAnimationFrame(animationFrame);
       };
+
+      const resetAnimation = () => {
+        track.style.stroke = "#ffffff";
+        track.style.strokeDashoffset = 100;
+      };
+
+      let userPaused = true;
 
       audioControl.addEventListener("click", () => {
         if (audio.paused) {
@@ -516,26 +527,26 @@
           startAnimation();
         } else {
           audio.pause();
+          userPaused = true;
           iconPause.style.display = "none";
           iconPlay.style.display = "block";
-          endAnimation();
+          pauseAnimation();
         }
       });
 
       audio.addEventListener("play", () => {
-        if (firstTime) {
-          firstTime = false;
+        console.log(`play ${audio.src}`);
+        if (audio.src !== window.location.href) {
+          audioControl.style.transform = `translateX(-50%)`;
           startAnimation();
+        } else {
+          resetAnimation();
+          pauseAnimation();
+          audio.pause();
         }
-        audioControl.style.transform = `translateX(-50%)`;
         iconPause.style.display = "block";
         iconPlay.style.display = "none";
       });
-
-      // audio.addEventListener("pause", () => {
-      //   iconPause.style.display = "none";
-      //   iconPlay.style.display = "block";
-      // });
 
       audio.addEventListener("durationchange", () => {
         track.style.strokeDashoffset = 100;
