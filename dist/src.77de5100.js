@@ -49555,8 +49555,9 @@ var MaskRevealView = /*#__PURE__*/function () {
     this.changeAudioSrcByIndex = function (index) {
       if (_this.audio !== null) {
         if (Object.keys(AudioTracks_1.audioTracks).includes(index.toString())) {
-          _this.audio.src = AudioTracks_1.audioTracks[index]; // if (!this.audio.src.includes(audioTracks[index.toString()])) {
-          // }
+          if (!_this.audio.src.includes(AudioTracks_1.audioTracks[index.toString()])) {
+            _this.audio.src = AudioTracks_1.audioTracks[index];
+          }
         } else {
           _this.audio.src = "";
 
@@ -49602,53 +49603,34 @@ var MaskRevealView = /*#__PURE__*/function () {
       }
     };
 
-    this.hideNext = function () {
-      var nextButton = document.getElementById("next");
+    this.hideButton = function (id) {
+      return function () {
+        var button = document.getElementById(id);
 
-      if (nextButton !== null) {
-        nextButton.style.transform = "translateY(-50%) translateX(160px)";
-      }
+        if (button !== null) {
+          button.classList.add("hidden");
+          button.classList.remove("show");
+        }
+      };
     };
 
-    this.showNext = function () {
-      var nextButton = document.getElementById("next");
+    this.showButton = function (id) {
+      return function () {
+        var button = document.getElementById(id);
 
-      if (nextButton !== null) {
-        nextButton.style.transform = "translateY(-50%)";
-      }
+        if (button !== null) {
+          button.classList.remove("hidden");
+          button.classList.add("show");
+        }
+      };
     };
 
-    this.hidePrev = function () {
-      var prevButton = document.getElementById("prev");
-
-      if (prevButton !== null) {
-        prevButton.style.transform = "translateY(-50%) translateX(-160px)";
-      }
-    };
-
-    this.showPrev = function () {
-      var prevButton = document.getElementById("prev");
-
-      if (prevButton !== null) {
-        prevButton.style.transform = "translateY(-50%)";
-      }
-    };
-
-    this.hideAudioControl = function () {
-      var audioControl = document.getElementById("audio-control");
-
-      if (audioControl !== null) {
-        audioControl.style.transform = "translateX(-50%) translateY(calc(80px + 94px + 20px))";
-      }
-    };
-
-    this.showAudioControl = function () {
-      var audioControl = document.getElementById("audio-control");
-
-      if (audioControl !== null) {
-        audioControl.style.transform = "translateX(-50%)";
-      }
-    };
+    this.hideNext = this.hideButton("next");
+    this.showNext = this.showButton("next");
+    this.hidePrev = this.hideButton("prev");
+    this.showPrev = this.showButton("prev");
+    this.hideAudioControl = this.hideButton("audio-control");
+    this.showAudioControl = this.showButton("audio-control");
 
     this.checkNavButtonsDisplay = function (index) {
       if (index > _this.pages.length) {
@@ -50369,7 +50351,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58298" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64968" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

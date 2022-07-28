@@ -725,9 +725,9 @@ export class MaskRevealView {
   private changeAudioSrcByIndex = (index: number) => {
     if (this.audio !== null) {
       if (Object.keys(audioTracks).includes(index.toString())) {
-        this.audio.src = audioTracks[index];
-        // if (!this.audio.src.includes(audioTracks[index.toString()])) {
-        // }
+        if (!this.audio.src.includes(audioTracks[index.toString()])) {
+          this.audio.src = audioTracks[index];
+        }
       } else {
         this.audio.src = "";
         this.hideAudioControl();
@@ -770,48 +770,27 @@ export class MaskRevealView {
     }
   };
 
-  private hideNext = () => {
-    const nextButton = document.getElementById("next");
-    if (nextButton !== null) {
-      nextButton.style.transform = "translateY(-50%) translateX(160px)";
+  private hideButton = (id: string) => () => {
+    const button = document.getElementById(id);
+    if (button !== null) {
+      button.classList.add("hidden");
+      button.classList.remove("show");
+    }
+  };
+  private showButton = (id: string) => () => {
+    const button = document.getElementById(id);
+    if (button !== null) {
+      button.classList.remove("hidden");
+      button.classList.add("show");
     }
   };
 
-  private showNext = () => {
-    const nextButton = document.getElementById("next");
-    if (nextButton !== null) {
-      nextButton.style.transform = "translateY(-50%)";
-    }
-  };
-
-  private hidePrev = () => {
-    const prevButton = document.getElementById("prev");
-    if (prevButton !== null) {
-      prevButton.style.transform = "translateY(-50%) translateX(-160px)";
-    }
-  };
-
-  private showPrev = () => {
-    const prevButton = document.getElementById("prev");
-    if (prevButton !== null) {
-      prevButton.style.transform = "translateY(-50%)";
-    }
-  };
-
-  private hideAudioControl = () => {
-    const audioControl = document.getElementById("audio-control");
-    if (audioControl !== null) {
-      audioControl.style.transform =
-        "translateX(-50%) translateY(calc(80px + 94px + 20px))";
-    }
-  };
-
-  private showAudioControl = () => {
-    const audioControl = document.getElementById("audio-control");
-    if (audioControl !== null) {
-      audioControl.style.transform = "translateX(-50%)";
-    }
-  };
+  private hideNext = this.hideButton("next");
+  private showNext = this.showButton("next");
+  private hidePrev = this.hideButton("prev");
+  private showPrev = this.showButton("prev");
+  private hideAudioControl = this.hideButton("audio-control");
+  private showAudioControl = this.showButton("audio-control");
 
   private checkNavButtonsDisplay = (index: number) => {
     if (index > this.pages.length) {

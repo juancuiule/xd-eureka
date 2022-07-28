@@ -297,6 +297,14 @@ gtag("config", "G-7XN211WD0G");</script>
         }
       }
 
+      :root {
+        --prev-next-button-size: 68px;
+        --audio-control-button-size: 94px;
+        --prev-button-margin: 80px;
+        --next-button-margin: 80px;
+        --audio-control-margin: 80px;
+      }
+
       button.action-button {
         border-radius: 100%;
         background: #14273c;
@@ -315,26 +323,70 @@ gtag("config", "G-7XN211WD0G");</script>
       button.prev,
       button.next {
         top: 50%;
-        width: 68px;
-        height: 68px;
+        width: var(--prev-next-button-size);
+        height: var(--prev-next-button-size);
+      }
+
+      button.prev.hidden,
+      button.next.hidden {
+        transform: translateY(-50%);
+      }
+
+      button.prev.hidden {
+        transform: translateY(-50%)
+          translateX(
+            calc(
+              (-1) * (var(--prev-next-button-size) + var(--next-button-margin))
+            )
+          );
+      }
+
+      button.next.hidden {
+        transform: translateY(-50%)
+          translateX(
+            calc(var(--prev-next-button-size) + var(--next-button-margin))
+          );
       }
 
       button.prev {
-        left: 80px;
-        transform: translateY(-50%) translateX(-160px);
+        left: var(--prev-button-margin);
       }
 
       button.next {
-        right: 80px;
-        transform: translateY(-50%) translateX(160px);
+        right: var(--next-button-margin);
+      }
+
+      @media (max-width: 768px) {
+        :root {
+          --prev-button-margin: 20px;
+          --next-button-margin: 20px;
+          --audio-control-margin: 48px;
+        }
+
+        button.prev,
+        button.next {
+          bottom: 60px;
+          top: initial;
+          transform: translateY(0);
+        }
       }
 
       .audio-control {
-        width: 94px;
-        height: 94px;
-        transform: translateX(-50%) translateY(calc(80px + 94px + 20px));
+        width: var(--audio-control-button-size);
+        height: var(--audio-control-button-size);
         left: 50%;
-        bottom: 80px;
+        bottom: var(--audio-control-margin);
+      }
+
+      .audio-control.hidden {
+        transform: translateX(-50%)
+          translateY(
+            calc(var(--audio-control-margin) + var(--audio-control-button-size))
+          );
+      }
+
+      .audio-control.show {
+        transform: translateX(-50%) translateY(0);
       }
 
       .audio-control svg {
@@ -363,10 +415,10 @@ gtag("config", "G-7XN211WD0G");</script>
   </head>
 
   <body>
-    <button class="action-button prev" id="prev">
+    <button class="action-button prev hidden" id="prev">
       <img src="/chevron-left.50f6a5e5.svg" alt="chevron-left">
     </button>
-    <button class="action-button next" id="next">
+    <button class="action-button next hidden" id="next">
       <img src="/chevron-right.45fd4721.svg" alt="chevron-right">
     </button>
 
@@ -422,7 +474,7 @@ gtag("config", "G-7XN211WD0G");</script>
       </div>
     </div>
 
-    <button class="audio-control action-button" id="audio-control">
+    <button class="audio-control action-button hidden" id="audio-control">
       <svg>
         <circle class="track" id="track" cx="50%" cy="50%" r="40" fill="none" stroke="white" pathLength="100"></circle>
       </svg>
