@@ -533,9 +533,12 @@ audio.addEventListener("play", function () {
   console.log("play ".concat(audio.src));
 
   if (audio.src !== window.location.href) {
-    audioControl.style.transform = "translateX(-50%)";
+    audioControl.classList.add("show");
+    audioControl.classList.remove("hidden");
     startAnimation();
   } else {
+    audioControl.classList.remove("show");
+    audioControl.classList.add("hidden");
     resetAnimation();
     pauseAnimation();
     audio.pause();

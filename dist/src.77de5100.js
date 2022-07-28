@@ -49647,10 +49647,14 @@ var MaskRevealView = /*#__PURE__*/function () {
     };
 
     this.setCurrentPage = function (index) {
+      var _a;
+
       _this.checkNavButtonsDisplay(index);
 
       if (index >= 3) {
-        _this.showAudioControl();
+        if (((_a = _this.audio) === null || _a === void 0 ? void 0 : _a.src) !== window.location.href) {
+          _this.showAudioControl();
+        }
       } else {
         _this.hideAudioControl();
       }

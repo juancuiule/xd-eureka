@@ -808,7 +808,9 @@ export class MaskRevealView {
     this.checkNavButtonsDisplay(index);
 
     if (index >= 3) {
-      this.showAudioControl();
+      if (this.audio?.src !== window.location.href) {
+        this.showAudioControl();
+      }
     } else {
       this.hideAudioControl();
     }
