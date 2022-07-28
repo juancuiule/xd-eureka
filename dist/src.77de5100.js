@@ -49635,6 +49635,8 @@ var MaskRevealView = /*#__PURE__*/function () {
     this.checkNavButtonsDisplay = function (index) {
       if (index > _this.pages.length) {
         _this.hideNext();
+
+        _this.hidePrev();
       } else if (index === 0) {
         _this.hidePrev();
       } else {
@@ -49893,8 +49895,8 @@ var MaskRevealView = /*#__PURE__*/function () {
         powerPreference: "high-performance",
         premultipliedAlpha: window.Main.PREMULTIPLIEDALPHA,
         alpha: true
-      });
-      this.renderer.setClearColor(0xff0000, 0);
+      }); // this.renderer.setClearColor(0xff0000, 0);
+
       this.renderer.setPixelRatio(gsap_1.gsap.utils.clamp(1, 3, window.devicePixelRatio));
       this.renderer.setSize(this._parent.clientWidth, this._parent.clientHeight);
 

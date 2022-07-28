@@ -229,7 +229,7 @@ export class MaskRevealView {
       premultipliedAlpha: (window as any).Main.PREMULTIPLIEDALPHA,
       alpha: true,
     });
-    this.renderer.setClearColor(0xff0000, 0);
+    // this.renderer.setClearColor(0xff0000, 0);
     this.renderer.setPixelRatio(
       gsap.utils.clamp(1, 3, window.devicePixelRatio)
     );
@@ -795,6 +795,7 @@ export class MaskRevealView {
   private checkNavButtonsDisplay = (index: number) => {
     if (index > this.pages.length) {
       this.hideNext();
+      this.hidePrev();
     } else if (index === 0) {
       this.hidePrev();
     } else {
