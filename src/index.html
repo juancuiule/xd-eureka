@@ -573,6 +573,7 @@
 
       audioControl.addEventListener("click", () => {
         if (audio.paused) {
+          userPaused = false;
           audio.play();
           startAnimation();
         } else {
@@ -585,20 +586,26 @@
       });
 
       audio.addEventListener("play", () => {
-        console.log(`play ${audio.src}`);
-        if (audio.src !== window.location.href) {
-          audioControl.classList.add("show");
-          audioControl.classList.remove("hidden");
-          startAnimation();
-        } else {
+        const nullAudioSrc = audio.src === window.location.href;
+        if (nullAudioSrc) {
           audioControl.classList.remove("show");
           audioControl.classList.add("hidden");
+        } else {
+          audioControl.classList.add("show");
+          audioControl.classList.remove("hidden");
+        }
+
+        if (!nullAudioSrc && !userPaused) {
+          startAnimation();
+          iconPause.style.display = "block";
+          iconPlay.style.display = "none";
+        } else {
           resetAnimation();
           pauseAnimation();
+          iconPause.style.display = "none";
+          iconPlay.style.display = "block";
           audio.pause();
         }
-        iconPause.style.display = "block";
-        iconPlay.style.display = "none";
       });
 
       audio.addEventListener("durationchange", () => {

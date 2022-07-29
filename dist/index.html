@@ -519,6 +519,7 @@ var resetAnimation = function resetAnimation() {
 var userPaused = true;
 audioControl.addEventListener("click", function () {
   if (audio.paused) {
+    userPaused = false;
     audio.play();
     startAnimation();
   } else {
@@ -530,22 +531,27 @@ audioControl.addEventListener("click", function () {
   }
 });
 audio.addEventListener("play", function () {
-  console.log("play ".concat(audio.src));
+  var nullAudioSrc = audio.src === window.location.href;
 
-  if (audio.src !== window.location.href) {
-    audioControl.classList.add("show");
-    audioControl.classList.remove("hidden");
-    startAnimation();
-  } else {
+  if (nullAudioSrc) {
     audioControl.classList.remove("show");
     audioControl.classList.add("hidden");
-    resetAnimation();
-    pauseAnimation();
-    audio.pause();
+  } else {
+    audioControl.classList.add("show");
+    audioControl.classList.remove("hidden");
   }
 
-  iconPause.style.display = "block";
-  iconPlay.style.display = "none";
+  if (!nullAudioSrc && !userPaused) {
+    startAnimation();
+    iconPause.style.display = "block";
+    iconPlay.style.display = "none";
+  } else {
+    resetAnimation();
+    pauseAnimation();
+    iconPause.style.display = "none";
+    iconPlay.style.display = "block";
+    audio.pause();
+  }
 });
 audio.addEventListener("durationchange", function () {
   track.style.strokeDashoffset = 100;
