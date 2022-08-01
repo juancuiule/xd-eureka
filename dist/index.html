@@ -354,21 +354,6 @@ gtag("config", "G-7XN211WD0G");</script>
         right: var(--next-button-margin);
       }
 
-      @media (max-width: 768px) {
-        :root {
-          --prev-button-margin: 20px;
-          --next-button-margin: 20px;
-          --audio-control-margin: 48px;
-        }
-
-        button.prev,
-        button.next {
-          bottom: 60px;
-          top: initial;
-          transform: translateY(0);
-        }
-      }
-
       .audio-control {
         width: var(--audio-control-button-size);
         height: var(--audio-control-button-size);
@@ -409,6 +394,54 @@ gtag("config", "G-7XN211WD0G");</script>
       #icon-play,
       #icon-pause {
         display: none;
+      }
+
+      @media (max-width: 768px) {
+        :root {
+          --prev-button-margin: 20px;
+          --next-button-margin: 20px;
+          --audio-control-margin: 48px;
+        }
+
+        button.prev,
+        button.next {
+          bottom: 60px;
+          top: initial;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-height: 575px) and (orientation: landscape) {
+        :root {
+          --prev-button-margin: 20px;
+          --next-button-margin: 20px;
+          --audio-control-margin: 20px;
+        }
+
+        button.prev,
+        button.next {
+          /* bottom: 10px; */
+          top: 50%;
+          transform: translateY(-50%);
+        }
+
+        .audio-control {
+          right: 20px;
+          left: initial;
+        }
+
+        .audio-control.hidden {
+          transform: translateX(0%)
+            translateY(
+              calc(
+                var(--audio-control-margin) + var(--audio-control-button-size)
+              )
+            );
+        }
+
+        .audio-control.show {
+          transform: translateX(0%) translateY(0);
+        }
       }</style>
   </head>
 
